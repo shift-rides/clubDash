@@ -4,6 +4,9 @@ module.exports = {
     path: `${__dirname}/build`,
     filename: 'app.bundle.js',
   },
+  resolve: {
+    extensions: ['.js', '.jsx'],
+  },
   module: {
     rules: [
       {

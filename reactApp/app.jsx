@@ -1,20 +1,49 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 
-class TodoApp extends React.Component {
+import Login from './Components/Login';
+import Dashboard from './Components/Dashboard';
+
+class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      cridentials: false,
+    };
+    this.setCridentials = this.setCridentials.bind(this);
+  }
+
+  setCridentials() {
+    this.setState({
+      cridentials: true,
+    });
   }
 
   render() {
+    if (!this.state.cridentials) {
+      return <Login setCridentials={this.setCridentials} />;
+    }
     return (
-      <div>
-        <p>Hello React!</p>
-      </div>
+      <BrowserRouter>
+        <Switch>
+          <Route
+            path="/dashboard"
+            render={() => <Dashboard />}
+          />
+          <Route
+            path="/"
+            render={() => <Redirect to="/dashboard" />}
+          />
+        </Switch>
+      </BrowserRouter>
     );
   }
 }
 
-ReactDOM.render(<TodoApp />,
-  document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
