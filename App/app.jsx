@@ -6,9 +6,11 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
+import axios from 'axios';
 
 import Login from './Components/Login';
 import Dashboard from './Components/Dashboard';
+import { SERVER_URL } from './constants';
 
 class App extends React.Component {
   constructor(props) {
@@ -17,22 +19,35 @@ class App extends React.Component {
       cridentials: false,
     };
     this.setCridentials = this.setCridentials.bind(this);
+    this.errorMessage = this.errorMessage.bind(this);
   }
 
   setCridentials(creds) {
-    if (creds.profileObj.email.split('@') !== 'colgate.edu') {
-      console.log('THIS IS NOT A COLGATE EMAIL AAAAAGH');
-    } else {
-      this.setState({
-        cridentials: creds,
+    axios.post(`${SERVER_URL}/login`, {
+      profile: creds.profileObj,
+    })
+      .then((res) => {
+        if (res.data.success) {
+          this.setState({
+            cridentials: res.data.user,
+          });
+        } else {
+          this.errorMessage('Invalid google profile');
+        }
       });
-      console.log(creds);
-    }
+  }
+
+  errorMessage(msg) {
+    // TODO: Create a custom Error modal
+    alert(msg);
   }
 
   render() {
     if (!this.state.cridentials) {
-      return <Login setCridentials={this.setCridentials} />;
+      return (<Login
+        setCridentials={this.setCridentials}
+        errorMessage={this.errorMessage}
+      />);
     }
     return (
       <BrowserRouter>

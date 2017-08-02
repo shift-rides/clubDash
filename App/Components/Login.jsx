@@ -1,23 +1,22 @@
 import React from 'react';
-import {
-  Button,
-} from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import GoogleLogin from 'react-google-login';
 
-const CID = "200982122162-bd6fmgfc10jk87p650gc5lrr1hu3tlcd.apps.googleusercontent.com";
+import { CLIENT_ID } from '../constants';
 
 const Login = props => (
   <div>
     <GoogleLogin
       onSuccess={props.setCridentials}
-      onFailure={console.log}
-      clientId={CID}
+      onFailure={props.errorMessage}
+      clientId={CLIENT_ID}
     />
   </div>
 );
 
 Login.propTypes = {
-  setCridentials: React.PropTypes.func.isRequired,
+  setCridentials: PropTypes.func.isRequired,
+  errorMessage: PropTypes.func.isRequired,
 };
 
 export default Login;
