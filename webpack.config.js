@@ -1,8 +1,11 @@
 module.exports = {
-  entry: './reactApp/app.jsx',
+  entry: './App/app.jsx',
   output: {
     path: `${__dirname}/build`,
     filename: 'app.bundle.js',
+  },
+  resolve: {
+    extensions: ['.js', '.jsx'],
   },
   module: {
     rules: [
