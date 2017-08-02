@@ -1,2 +1,0 @@
-export GOOGLE_CLIENT_ID=200982122162-bd6fmgfc10jk87p650gc5lrr1hu3tlcd.apps.googleusercontent.com
-export GOOGLE_CLIENT_SECRET=eHdStzcGWWK_zKT8wcS6iV3t
