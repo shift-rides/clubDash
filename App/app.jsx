@@ -19,10 +19,15 @@ class App extends React.Component {
     this.setCridentials = this.setCridentials.bind(this);
   }
 
-  setCridentials() {
-    this.setState({
-      cridentials: true,
-    });
+  setCridentials(creds) {
+    if (creds.profileObj.email.split('@') !== 'colgate.edu') {
+      console.log('THIS IS NOT A COLGATE EMAIL AAAAAGH');
+    } else {
+      this.setState({
+        cridentials: creds,
+      });
+      console.log(creds);
+    }
   }
 
   render() {
@@ -34,7 +39,7 @@ class App extends React.Component {
         <Switch>
           <Route
             path="/dashboard"
-            render={() => <Dashboard />}
+            render={() => <Dashboard user={this.state.cridentials} />}
           />
           <Route
             path="/"
