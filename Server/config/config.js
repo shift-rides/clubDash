@@ -10,15 +10,18 @@ const routeConfig = require('./routes');
 const config = (app) => {
   app.use(serveStatic('build'));
   app.use(cookieParser());
-  app.use(bodyParser());
-  app.use(session({ secret: process.env.GOOGLE_CLIENT_SECRET }));
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(session({
+    secret: process.env.GOOGLE_CLIENT_SECRET,
+    saveUninitialized: false,
+    resave: false,
+  }));
   const corsOptions = {
     origin: process.env.APP_DOMAIN,
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204 
   };
   app.use(cors(corsOptions));
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: false }));
 
   passportConfig(app);
   routeConfig(app);

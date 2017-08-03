@@ -12025,11 +12025,11 @@ var Dashboard = function (_React$Component) {
   return Dashboard;
 }(_react2.default.Component);
 
-Dashboard.propTypes = {
-  user: _propTypes2.default.shape({
-    imageUrl: _propTypes2.default.string
-  }).isRequired
-};
+// Dashboard.propTypes = {
+//   user: PropTypes.shape({
+//     imageUrl: PropTypes.string,
+//   }).isRequired,
+// };
 
 exports.default = Dashboard;
 
