@@ -1,16 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Profile = props => (
-  <div>
-    <h2>Hows this look?</h2>
-    <img alt="X" src={props.user.imageUrl} />
-  </div>
-);
+class Profile extends React.Component {
+  render() {
+    return (
+      <div>
+        <img alt="X" src={this.props.profile.imageUrl} />
+        <h1>{this.props.profile.name}</h1>
+      </div>
+    );
+  }
+}
 
 Profile.propTypes = {
-  user: PropTypes.shape({
+  profile: PropTypes.shape({
     imageUrl: PropTypes.string,
+    name: PropTypes.string,
   }).isRequired,
 };
 

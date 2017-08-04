@@ -27,6 +27,15 @@ const routeHelper = (app) => {
     }
   });
 
+  app.post('/logout', (req, res) => {
+    req.logout();
+    res.redirect('/');
+  });
+
+  app.get('/userInfo', (req, res) => {
+    res.json(req.user);
+  });
+
   app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, '../..', 'build/app.html'));
   });

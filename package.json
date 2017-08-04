@@ -5,10 +5,12 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "concurrently -k \"npm run webpack\" \"npm run server\"",
         "webpack": "webpack",
+        "server": "node ./Server/server.js",
         "dev": "concurrently -k \"npm run devWebpack\" \"npm run devServer\"",
-        "devWebpack": "webpack-dev-server --content-base build/",
-        "devServer": "nodemon ./Server/server.js"
+        "devWebpack": "webpack --watch",
+        "devServer": "node ./Server/server.js"
     },
     "repository": {
         "type": "git",
@@ -28,7 +30,6 @@
         "babel-preset-react": "^6.24.1",
         "body-parser": "^1.17.2",
         "cookie-parser": "^1.4.3",
-        "cors": "^2.8.4",
         "express": "^4.15.3",
         "express-session": "^1.15.5",
         "mongoose": "^4.11.5",
@@ -49,7 +50,6 @@
         "eslint-plugin-import": "^2.7.0",
         "eslint-plugin-jsx-a11y": "^5.1.1",
         "eslint-plugin-react": "^7.1.0",
-        "webpack-dev-server": "^2.5.0",
         "concurrently": "^3.5.0"
     }
 }
