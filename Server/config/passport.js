@@ -20,6 +20,8 @@ const passportHelper = (app) => {
             googleId: profile.id,
             name: profile.displayName,
             imageUrl: profile.photos[0].value,
+            email: profile.emails[0].value,
+            waivers: [],
           });
           newUser.save((saveErr) => {
             if (saveErr) {

@@ -6,7 +6,7 @@ class Profile extends React.Component {
     return (
       <div>
         <img alt="X" src={this.props.profile.imageUrl} />
-        <h1>{this.props.profile.name}</h1>
+        <h3>{this.props.profile.name}</h3>
       </div>
     );
   }

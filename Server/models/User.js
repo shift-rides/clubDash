@@ -8,6 +8,8 @@ const userSchema = mongoose.Schema({
   googleId: String,
   name: String,
   imageUrl: String,
+  email: String,
+  waivers: Array,
 });
 
 const User = mongoose.model('User', userSchema);

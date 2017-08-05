@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {
   Switch,
   Route,
@@ -7,6 +6,7 @@ import {
 import {
   Navbar,
   Jumbotron,
+  Modal,
   Nav,
   NavDropdown,
   NavItem,
@@ -16,18 +16,35 @@ import {
 import axios from 'axios';
 
 import Profile from './Profile';
+import Clubs from './Clubs';
+import MainWaiver from './MainWaiver';
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       profile: null,
+      showModal: false,
     };
+    this.closeModal = this.closeModal.bind(this);
+    this.openModal = this.openModal.bind(this);
   }
-
   componentWillMount() {
     axios.get('/userInfo')
-      .then((profile) => { this.setState({ profile: profile.data }); });
+      .then(profile => this.setState({ profile: profile.data }, () => {
+        if (this.state.profile.waivers.length < 1 && !this.state.showModal) {
+          this.openModal();
+        }
+      }));
+  }
+
+  openModal() {
+    this.setState({ showModal: true });
+  }
+  closeModal() {
+    if (true) { // TODO: Make sure the waiver was finsihed
+      this.setState({ showModal: false });
+    }
   }
   render() {
     return (
@@ -35,7 +52,8 @@ class Dashboard extends React.Component {
         <Navbar>
           <Nav>
             <NavDropdown id="basic-nav-dropdown" title={<Glyphicon glyph="menu-hamburger" />}>
-              <MenuItem href="#/dashboard/profile">Your Profile</MenuItem>
+              <MenuItem href="#/profile">Profile</MenuItem>
+              <MenuItem href="#/clubs">Clubs</MenuItem>
             </NavDropdown>
           </Nav>
           <Navbar.Header>
@@ -50,11 +68,18 @@ class Dashboard extends React.Component {
         <Jumbotron>
           <Switch>
             <Route
-              path="/dashboard/profile"
+              path="/profile"
               render={() => <Profile profile={this.state.profile} />}
+            />
+            <Route
+              path="/clubs"
+              render={() => <Clubs profile={this.state.profile} />}
             />
           </Switch>
         </Jumbotron>
+        <Modal show={this.state.showModal} onHide={this.closeModal}>
+          <MainWaiver profile={this.state.profile} closeModal={this.closeModal} />
+        </Modal>
       </div >
     );
   }

@@ -3,7 +3,7 @@ const path = require('path');
 
 const routeHelper = (app) => {
   app.post('/login',
-    passport.authenticate('google', { scope: ['profile'] }));
+    passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'] }));
 
   app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '../..', 'build/login.html'));
