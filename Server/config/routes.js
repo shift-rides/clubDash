@@ -1,6 +1,8 @@
 const passport = require('passport');
 const path = require('path');
 
+const { User, Waiver, Club } = require('../models/models');
+
 const routeHelper = (app) => {
   app.post('/login',
     passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'] }));
@@ -34,6 +36,45 @@ const routeHelper = (app) => {
 
   app.get('/userInfo', (req, res) => {
     res.json(req.user);
+  });
+
+  app.post('/clubs', (req, res) => {
+    if (req.user.admin) {
+      const newClub = new Club(Object.assign({}, { members: [] }, req.body));
+      newClub.save(() => res.json({ success: true }));
+    } else {
+      res.json({ success: false });
+    }
+  });
+  app.get('/clubs', (req, res) => {
+    Club.find((err, clubs) => res.json(clubs));
+  });
+  app.get('/clubs/:clubId', (req, res) => {
+    Club.findById(req.params.clubId, (err, club) => res.json(club));
+  });
+  app.post('/clubs/:clubId', (req, res) => {
+    Club.findOneAndUpdate(req.params.clubId,
+      { $push: { members: req.user._id } },
+      { safe: true, upsert: true },
+      () => res.json({ success: true }),
+    );
+  });
+
+  app.post('/mainWaiver', (req, res) => {
+    if (req.body.email !== req.user.email) {
+      res.json({ success: false });
+    } else {
+      User.findById(req.user.id, (err, user) => {
+        if (req.body.name !== req.user.name) {
+          user.name = req.body.name;
+        }
+        const newWaiver = new Waiver(req.body);
+        newWaiver.save(() => {
+          user.waivers.push(newWaiver.id);
+          user.save(() => res.json({ success: true }));
+        });
+      });
+    }
   });
 
   app.get('/*', (req, res) => {

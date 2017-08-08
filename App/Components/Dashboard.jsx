@@ -16,6 +16,7 @@ import {
 import axios from 'axios';
 
 import Profile from './Profile';
+import ClubProfile from './ClubProfile';
 import Clubs from './Clubs';
 import MainWaiver from './MainWaiver';
 
@@ -41,10 +42,13 @@ class Dashboard extends React.Component {
   openModal() {
     this.setState({ showModal: true });
   }
-  closeModal() {
-    if (true) { // TODO: Make sure the waiver was finsihed
-      this.setState({ showModal: false });
-    }
+  closeModal(information) {
+    axios.post('/mainWaiver', information)
+      .then((res) => {
+        if (res.data.success) { // TODO: Make sure the waiver was finsihed
+          this.setState({ showModal: false });
+        }
+      });
   }
   render() {
     return (
@@ -52,7 +56,7 @@ class Dashboard extends React.Component {
         <Navbar>
           <Nav>
             <NavDropdown id="basic-nav-dropdown" title={<Glyphicon glyph="menu-hamburger" />}>
-              <MenuItem href="#/profile">Profile</MenuItem>
+              <MenuItem href="#/">Home</MenuItem>
               <MenuItem href="#/clubs">Clubs</MenuItem>
             </NavDropdown>
           </Nav>
@@ -68,16 +72,20 @@ class Dashboard extends React.Component {
         <Jumbotron>
           <Switch>
             <Route
-              path="/profile"
-              render={() => <Profile profile={this.state.profile} />}
+              path="/clubs/:clubId"
+              component={ClubProfile}
             />
             <Route
               path="/clubs"
-              render={() => <Clubs profile={this.state.profile} />}
+              component={Clubs}
+            />
+            <Route
+              path="/"
+              component={Profile}
             />
           </Switch>
         </Jumbotron>
-        <Modal show={this.state.showModal} onHide={this.closeModal}>
+        <Modal show={this.state.showModal}>
           <MainWaiver profile={this.state.profile} closeModal={this.closeModal} />
         </Modal>
       </div >

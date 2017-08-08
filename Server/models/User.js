@@ -1,15 +1,13 @@
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.MONGODB_URI, {
-  useMongoClient: true,
-});
-
 const userSchema = mongoose.Schema({
   googleId: String,
   name: String,
   imageUrl: String,
   email: String,
-  waivers: Array,
+  waivers: [mongoose.Schema.Types.ObjectId],
+  clubsLeading: [mongoose.Schema.Types.ObjectId],
+  admin: Boolean,
 });
 
 const User = mongoose.model('User', userSchema);

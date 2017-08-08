@@ -60,21 +60,20 @@ class MainWaiver extends React.Component {
   }
 
   submitForm() {
-    // TODO: Do something with the information
-    const filledForm = {
-      name: document.getElementById('name').value,
-      year: document.getElementById('year').value,
-      email: document.getElementById('email').value,
-      phone: document.getElementById('phone').value,
+    const information = {
+      name: this.state.nameVal,
+      year: this.state.yearVal,
+      email: this.props.profile.email,
+      phone: this.state.phoneVal,
       gender: this.state.gender,
     };
-    this.props.closeModal();
+    this.props.closeModal(information);
   }
 
   render() {
     return (
       <div>
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title>Join Clubs Waiver</Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -117,13 +116,28 @@ class MainWaiver extends React.Component {
             </FormGroup>
             <FormGroup>
               <ControlLabel>Gender</ControlLabel><br />
-              <Radio onChange={e => this.setState({ gender: e.target.value })} value="female" name="radioGroup" inline>
+              <Radio
+                onChange={e => this.setState({ gender: e.target.value })}
+                value="female"
+                name="radioGroup"
+                inline
+              >
                 Female
               </Radio>
-              <Radio onChange={e => this.setState({ gender: e.target.value })} value="male" name="radioGroup" inline>
+              <Radio
+                onChange={e => this.setState({ gender: e.target.value })}
+                value="male"
+                name="radioGroup"
+                inline
+              >
                 Male
               </Radio>
-              <Radio onChange={e => this.setState({ gender: e.target.value })} value={this.state.genderVal || 'self-identify'} name="radioGroup" inline>
+              <Radio
+                onChange={e => this.setState({ gender: e.target.value })}
+                value={this.state.genderVal || 'self-identify'}
+                name="radioGroup"
+                inline
+              >
                 {this.state.genderVal || 'Self-Identify'}
               </Radio>
             </FormGroup>

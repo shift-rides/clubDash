@@ -1,7 +1,7 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
-const User = require('../models/User');
+const { User } = require('../models/models');
 
 const passportHelper = (app) => {
   passport.use(new GoogleStrategy({
@@ -14,7 +14,12 @@ const passportHelper = (app) => {
         if (err) {
           done(err, null);
         } else if (user) {
-          done(null, user);
+          if (profile.photos[0].value !== user.imageUrl) {
+            user.imageUrl = profile.photos[0].value;
+            user.save(() => done(null, user));
+          } else {
+            done(null, user);
+          }
         } else {
           const newUser = new User({
             googleId: profile.id,
@@ -22,6 +27,8 @@ const passportHelper = (app) => {
             imageUrl: profile.photos[0].value,
             email: profile.emails[0].value,
             waivers: [],
+            admin: false,
+            clubsLeading: [],
           });
           newUser.save((saveErr) => {
             if (saveErr) {
