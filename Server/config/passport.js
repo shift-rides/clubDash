@@ -1,7 +1,7 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
-const User = require('../models/User');
+const { User } = require('../models/models');
 
 const passportHelper = (app) => {
   passport.use(new GoogleStrategy({
@@ -10,21 +10,35 @@ const passportHelper = (app) => {
     callbackURL: 'http://localhost:3000/auth/google/callback',
   },
     ((accessToken, refreshToken, profile, done) => {
-      User.findOne({ googleId: profile.id })
-        .then((user) => {
-          if (user) {
-            done(null, user);
+      User.findOne({ googleId: profile.id }, (err, user) => {
+        if (err) {
+          done(err, null);
+        } else if (user) {
+          if (profile.photos[0].value !== user.imageUrl) {
+            user.imageUrl = profile.photos[0].value;
+            user.save(() => done(null, user));
           } else {
-            const newUser = new User({
-              googleId: profile.id,
-              name: profile.displayName,
-              imageUrl: profile.photos[0].value,
-            });
-            newUser.save()
-              .then(() => { done(null, user); })
-              .catch((err) => { done(err, null); });
+            done(null, user);
           }
-        }).catch((err) => { done(err, null); });
+        } else {
+          const newUser = new User({
+            googleId: profile.id,
+            name: profile.displayName,
+            imageUrl: profile.photos[0].value,
+            email: profile.emails[0].value,
+            waivers: [],
+            admin: false,
+            clubsLeading: [],
+          });
+          newUser.save((saveErr) => {
+            if (saveErr) {
+              done(saveErr, null);
+            } else {
+              done(null, newUser);
+            }
+          });
+        }
+      });
     }),
   ));
 
