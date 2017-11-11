@@ -155,7 +155,7 @@ class MainWaiver extends React.Component {
             Note: Only your email and name will be saved for future use on the site
           </HelpBlock>
         </Modal.Footer>
-      </div >
+      </div>
     );
   }
 }
@@ -164,8 +164,8 @@ MainWaiver.propTypes = {
   closeModal: PropTypes.func.isRequired,
   profile: PropTypes.shape({
     name: PropTypes.string,
-    email: PropTypes.string,
-  }),
-};
+    email: PropTypes.string
+  })
+}
 
 export default MainWaiver;
