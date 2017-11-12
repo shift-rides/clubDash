@@ -46,8 +46,20 @@ const routeHelper = (app) => {
   app.get('/events', (req, res) => {
     Event.find().lean().exec(function (err, users) {
      res.json((users));
-});
+    });
   });
+
+  app.get('/eventInfo/:eventId', (req, res) => {
+    Event.findOne({ _id: req.params.eventId})
+    .populate('riders') // <==
+    .exec(function(err, riders){
+      console.log(riders);
+         res.json((riders));
+    });
+    });
+
+
+
 
   app.post('/clubs', (req, res) => {
     if (req.user.admin) {
@@ -75,6 +87,17 @@ const routeHelper = (app) => {
       () => res.json({ success: true }),
     );
   });
+
+
+  app.post('/removeUserFromEvent/', (req, res) => {
+Event.update(
+  {_id: req.body.eventId},
+  { $pull: {riders: req.body.riderId } }
+).then( err => {
+  res.json({ success: true })
+});
+});
+
 
 // Saving an Event to DB
   app.post('/saveEvent', (req, res) => {

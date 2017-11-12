@@ -52,19 +52,36 @@ class Calendar extends React.Component {
   }
 
   handleOnSelectEvent (e) {
-    var organizerName
+    console.log(e);
+    var organizerName;
+    var ridersName;
     axios.get('/userInfo/' + e.organizer)
       .then(profile => {
-        organizerName = profile.data.name
-        e.organizerName = organizerName
-        this.setState({currEvent: e})
-        if (this.state.profile.name === organizerName) {
-          this.setState({showEditModal: true})
-        } else if (e.riders.indexOf(this.state.profile.name) !== -1) {
-          this.setState({showRiderModal: true})
-        } else {
-          this.setState({showJoinModal: true})
+        axios.get('/eventInfo/' + e._id).then(result => {
+
+          // let newInfo = [];
+          console.log('riders name', result.data.riders);
+          e.riders = result.data.riders;
+          // result.data.riders.forEach(name => {
+          // newInfo= [...newInfo, Object.assign(name,
+          //   {
+          //     riderName: name.name,
+          //   })]
+          // })
+          // console.log('new info', newInfo);
+          organizerName = profile.data.name
+          e.organizerName = organizerName
+          this.setState({currEvent: e})
+          if (this.state.profile.name === organizerName) {
+            this.setState({showEditModal: true})
+          } else if (e.riders.indexOf(this.state.profile.name) !== -1) {
+            this.setState({showRiderModal: true})
+          } else {
+            this.setState({showJoinModal: true})
+          }
         }
+      )
+
       })
   }
 
@@ -129,6 +146,21 @@ class Calendar extends React.Component {
     this.setState({ showEditModal: false })
     console.log('edit saved')
   }
+  removeRider(information){
+    axios.post('/removeUserFromEvent', information)
+      .then((res) => {
+        if (res.data.success) {
+
+        axios.get('/eventInfo/' + this.state.currEvent._id).then(event => {
+          // let newInfo = [];
+          // console.log('riders name', event.data);
+          // console.log("currEvent is ", this.state.currEvent);
+          this.setState({currEvent: event.data})
+            this.setState({ showEditModal: false })
+       })
+      }
+  })
+}
 
   leaveTrip (information) {
     this.setState({ showRiderModal: false })
@@ -250,6 +282,7 @@ class Calendar extends React.Component {
             deleteTrip={this.deleteTrip.bind(this)}
             cancelEdit={this.cancelEdit.bind(this)}
             saveEdit={this.saveEdit.bind(this)}
+            removeRider={this.removeRider.bind(this)}
           />
         </Modal>
         <Modal show={this.state.showRiderModal}>

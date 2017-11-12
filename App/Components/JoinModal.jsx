@@ -31,7 +31,7 @@ class JoinModal extends React.Component {
           <Modal.Title>Join Trip</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Modal.Title>Organizer: {this.state.currEvent.organizer}</Modal.Title>
+          <Modal.Title>Organizer: {this.state.currEvent.organizerName}</Modal.Title>
           <Modal.Title>Description: {this.state.currEvent.desc}</Modal.Title>
           <Modal.Title>Leaving from: {this.state.currEvent.origin}</Modal.Title>
           <Modal.Title>Destination: {this.state.currEvent.destination}</Modal.Title>

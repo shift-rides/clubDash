@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {AVAILABLE_NUMBERS} from '../../Library/const'
-
+import axios from 'axios'
 import {
   Modal,
   Button,
@@ -24,8 +24,9 @@ class EditModal extends React.Component {
     }
   }
 
-  removeRider () {
-    console.log('rider removed')
+  removeRider (e,b,c) {
+    const info = {riderId: e, eventId: this.state.currEvent._id }
+    this.props.removeRider(info);
   }
 
   handleNumSeatsChange (numSeats) {
@@ -79,8 +80,8 @@ class EditModal extends React.Component {
               {this.state.currEvent.riders.map((rider, index) => {
                 return (
                   <ListGroupItem key={index}>
-                    <ControlLabel>{rider}</ControlLabel>
-                    <Button onClick={this.removeRider.bind(this)}>Remove</Button>
+                    <ControlLabel>{rider.name}</ControlLabel>
+                    <Button onClick={this.removeRider.bind(this, rider._id)}>Remove</Button>
                   </ListGroupItem>)
               })}
             </ListGroup>
