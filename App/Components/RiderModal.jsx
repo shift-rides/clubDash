@@ -1,27 +1,35 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {AVAILABLE_NUMBERS} from '../../Library/const'
+
 import {
   Modal,
   Button,
   HelpBlock,
   ListGroup,
-  ListGroupItem
+  ListGroupItem,
+  ControlLabel,
+  DropdownButton,
+  MenuItem,
+  FormGroup
 } from 'react-bootstrap'
 
-class JoinModal extends React.Component {
+class RiderModal extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      currEvent: props.currEvent
+      currEvent: props.currEvent,
+      numSeats: String(props.currEvent.freeSeats),
+      availableNumbers: AVAILABLE_NUMBERS
     }
   }
 
-  cancelJoin () {
-    this.props.cancelJoin()
+  leaveTrip () {
+    this.props.leaveTrip()
   }
 
-  saveJoin () {
-    this.props.saveJoin()
+  closeRiderModal () {
+    this.props.closeRiderModal()
   }
 
   render () {
@@ -46,8 +54,8 @@ class JoinModal extends React.Component {
           </ListGroup>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={this.cancelJoin.bind(this)}>Cancel</Button>
-          <Button onClick={this.saveJoin.bind(this)}>Join</Button>
+          <Button onClick={this.leaveTrip.bind(this)}>Leave Trip</Button>
+          <Button onClick={this.closeRiderModal.bind(this)}>Done</Button>
           <HelpBlock />
         </Modal.Footer>
       </div>
@@ -55,13 +63,14 @@ class JoinModal extends React.Component {
   }
 }
 
-JoinModal.propTypes = {
-  cancelJoin: PropTypes.func.isRequired,
-  saveJoin: PropTypes.func.isRequired,
+RiderModal.propTypes = {
+  cancelEdit: PropTypes.func.isRequired,
+  saveEdit: PropTypes.func.isRequired,
+  deleteTrip: PropTypes.func.isRequired,
   profile: PropTypes.shape({
     name: PropTypes.string,
     email: PropTypes.string
   })
 }
 
-export default JoinModal
+export default RiderModal

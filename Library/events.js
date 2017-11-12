@@ -7,7 +7,7 @@ export default [
     origin: 'Brandeis',
     destination: 'New York',
     freeSeats: 3,
-    organizer: 'Tom',
+    organizer: 'Thomas Willkens',
     riders: ['Ben', 'Akiba'],
     desc: 'A fun trip.'
   },

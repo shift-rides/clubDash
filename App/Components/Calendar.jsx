@@ -1,5 +1,3 @@
-/* globals alert */
-
 import React from 'react'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
@@ -7,6 +5,7 @@ import myEventsList from '../../Library/events'
 import {Modal} from 'react-bootstrap'
 import TripModal from './TripModal'
 import JoinModal from './JoinModal'
+import EditModal from './EditModal'
 import axios from 'axios'
 
 BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
@@ -27,12 +26,12 @@ class Calendar extends React.Component {
   componentWillMount () {
     axios.get('/userInfo')
       .then(profile => this.setState({ profile: profile.data }, () => {
-    //    console.log('profile', profile)
+        console.log('profile', profile)
       }))
   }
 
   handleOnSelectEvent (e) {
-    console.log('e in select', e)
+    console.log('profile in handle', this.state.profile)
     this.setState({currEvent: {
       title: e.title,
       allDay: e.allDay,
@@ -45,7 +44,11 @@ class Calendar extends React.Component {
       riders: e.riders,
       desc: e.desc
     }})
-    this.setState({showJoinModal: true})
+    if (this.state.profile.name === e.organizer) {
+      this.setState({showEditModal: true})
+    } else {
+      this.setState({showJoinModal: true})
+    }
   }
 
   handleOnSelectSlot (slotInfo) {
@@ -72,11 +75,12 @@ class Calendar extends React.Component {
     this.setState({ showTripModal: false })
   }
   saveTrip (information) {
-    const newInfo= Object.assign(information,
-      { profile: this.state.profile,
+    const newInfo = Object.assign(information,
+      {
+        profile: this.state.profile,
         timeslotStart: this.state.timeslotStart,
-        timeslotEnd: this.state.timeslotEnd });
-    console.log("new checking info",newInfo);;
+        timeslotEnd: this.state.timeslotEnd
+      })
 
     axios.post('/saveEvent', information)
       .then((res) => {
@@ -103,6 +107,21 @@ class Calendar extends React.Component {
     //     }
     //   })
     this.setState({ showJoinModal: false })
+  }
+
+  deleteTrip (information) {
+    console.log('trip deleted')
+    this.setState({ showEditModal: false })
+  }
+
+  cancelEdit () {
+    console.log('edit canceled')
+    this.setState({ showEditModal: false })
+  }
+
+  saveEdit (information) {
+    this.setState({ showEditModal: false })
+    console.log('edit saved')
   }
 
   render () {
@@ -134,6 +153,15 @@ class Calendar extends React.Component {
             cancelJoin={this.cancelJoin.bind(this)}
             saveJoin={this.saveJoin.bind(this)}
             currEvent={this.state.currEvent}
+          />
+        </Modal>
+        <Modal show={this.state.showEditModal}>
+          <EditModal
+            profile={this.state.profile}
+            currEvent={this.state.currEvent}
+            deleteTrip={this.deleteTrip.bind(this)}
+            cancelEdit={this.cancelEdit.bind(this)}
+            saveEdit={this.saveEdit.bind(this)}
           />
         </Modal>
       </div>
