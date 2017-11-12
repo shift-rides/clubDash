@@ -6,6 +6,7 @@ import {Modal} from 'react-bootstrap'
 import TripModal from './TripModal'
 import JoinModal from './JoinModal'
 import EditModal from './EditModal'
+import RiderModal from './RiderModal'
 import axios from 'axios'
 
 BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
@@ -19,7 +20,8 @@ class Calendar extends React.Component {
       timeslotEnd: '',
       currEvent: {},
       showTripModal: false,
-      showJoinModal: false
+      showJoinModal: false,
+      showRiderModal: false
     }
   }
 
@@ -31,21 +33,15 @@ class Calendar extends React.Component {
   }
 
   handleOnSelectEvent (e) {
+    console.log('event', e)
     console.log('profile in handle', this.state.profile)
-    this.setState({currEvent: {
-      title: e.title,
-      allDay: e.allDay,
-      start: e.start,
-      end: e.end,
-      origin: e.origin,
-      destination: e.destination,
-      freeSeats: e.freeSeats,
-      organizer: e.organizer,
-      riders: e.riders,
-      desc: e.desc
-    }})
+    this.setState({currEvent: e})
+    console.log('this.state', this.state)
+    console.log('riders', e.riders)
     if (this.state.profile.name === e.organizer) {
       this.setState({showEditModal: true})
+    } else if (e.riders.indexOf(this.state.profile.name) !== -1) {
+      this.setState({showRiderModal: true})
     } else {
       this.setState({showJoinModal: true})
     }
@@ -124,6 +120,16 @@ class Calendar extends React.Component {
     console.log('edit saved')
   }
 
+  leaveTrip (information) {
+    this.setState({ showRiderModal: false })
+    console.log('rider has left trip')
+  }
+
+  closeRiderModal (information) {
+    this.setState({ showRiderModal: false })
+    console.log('rider modal closed')
+  }
+
   render () {
     return (
       <div>
@@ -162,6 +168,14 @@ class Calendar extends React.Component {
             deleteTrip={this.deleteTrip.bind(this)}
             cancelEdit={this.cancelEdit.bind(this)}
             saveEdit={this.saveEdit.bind(this)}
+          />
+        </Modal>
+        <Modal show={this.state.showRiderModal}>
+          <RiderModal
+            profile={this.state.profile}
+            currEvent={this.state.currEvent}
+            leaveTrip={this.leaveTrip.bind(this)}
+            closeRiderModal={this.closeRiderModal.bind(this)}
           />
         </Modal>
       </div>

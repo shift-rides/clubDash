@@ -60,12 +60,12 @@ class Dashboard extends React.Component {
           <Nav>
             <NavDropdown id='basic-nav-dropdown' title={<Glyphicon glyph='menu-hamburger' />}>
               <MenuItem href='#/'>Home</MenuItem>
-              <MenuItem href='#/clubs'>Clubs</MenuItem>
+              <MenuItem href='#/profile'>Profile</MenuItem>
             </NavDropdown>
           </Nav>
           <Navbar.Header>
             <Navbar.Brand>
-              ClubDash
+              Shift
             </Navbar.Brand>
           </Navbar.Header>
           <Nav pullRight>
@@ -83,12 +83,12 @@ class Dashboard extends React.Component {
               component={Clubs}
             />
             <Route
-              path='/'
-              component={Calendar}
-            />
-            <Route
               path='/profile'
               component={Profile}
+            />
+            <Route
+              path='/'
+              component={Calendar}
             />
           </Switch>
         </Jumbotron>

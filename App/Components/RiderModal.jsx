@@ -7,11 +7,7 @@ import {
   Button,
   HelpBlock,
   ListGroup,
-  ListGroupItem,
-  ControlLabel,
-  DropdownButton,
-  MenuItem,
-  FormGroup
+  ListGroupItem
 } from 'react-bootstrap'
 
 class RiderModal extends React.Component {
@@ -36,7 +32,7 @@ class RiderModal extends React.Component {
     return (
       <div className='join-modal'>
         <Modal.Header>
-          <Modal.Title>Join Trip</Modal.Title>
+          <Modal.Title>{this.state.currEvent.organizer}'s Trip</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Modal.Title>Organizer: {this.state.currEvent.organizer}</Modal.Title>
@@ -49,12 +45,15 @@ class RiderModal extends React.Component {
           <Modal.Title>Other Riders:</Modal.Title>
           <ListGroup>
             {this.state.currEvent.riders.map((rider, index) => {
-              return <ListGroupItem key={index}>{rider}</ListGroupItem>
+              if (rider === this.props.profile.name) {
+                return <ListGroupItem key={index}>{rider}<Button onClick={this.leaveTrip.bind(this)}>Click to Leave Trip</Button></ListGroupItem>
+              } else {
+                return <ListGroupItem key={index}>{rider}</ListGroupItem>
+              }
             })}
           </ListGroup>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={this.leaveTrip.bind(this)}>Leave Trip</Button>
           <Button onClick={this.closeRiderModal.bind(this)}>Done</Button>
           <HelpBlock />
         </Modal.Footer>
@@ -64,9 +63,8 @@ class RiderModal extends React.Component {
 }
 
 RiderModal.propTypes = {
-  cancelEdit: PropTypes.func.isRequired,
-  saveEdit: PropTypes.func.isRequired,
-  deleteTrip: PropTypes.func.isRequired,
+  leaveTrip: PropTypes.func.isRequired,
+  closeRiderModal: PropTypes.func.isRequired,
   profile: PropTypes.shape({
     name: PropTypes.string,
     email: PropTypes.string
