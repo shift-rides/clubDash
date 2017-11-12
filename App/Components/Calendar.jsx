@@ -179,7 +179,7 @@ class Calendar extends React.Component {
       return this.state.destinationFilter === 'All' || event.destination === this.state.destinationFilter
     })
     eventList = eventList.filter(event => {
-      return this.state.freeSeatsFilter === 'All' || event.freeSeats <= parseInt(this.state.freeSeatsFilter)
+      return this.state.freeSeatsFilter === 'All' || event.freeSeats >= parseInt(this.state.freeSeatsFilter)
     })
     this.setState({eventList})
   }
