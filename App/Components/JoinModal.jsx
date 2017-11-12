@@ -25,7 +25,7 @@ class JoinModal extends React.Component {
 
   render () {
     return (
-      <div>
+      <div className='join-modal'>
         <Modal.Header>
           <Modal.Title>Join Trip</Modal.Title>
         </Modal.Header>

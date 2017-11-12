@@ -58,7 +58,7 @@ class TripModal extends React.Component {
 
   render () {
     return (
-      <div>
+      <div className='trip-modal'>
         <Modal.Header>
           <Modal.Title>Organize Trip</Modal.Title>
           <Modal.Title>Start: {this.props.timeslotStart}</Modal.Title>
@@ -67,7 +67,7 @@ class TripModal extends React.Component {
         <Modal.Body>
           <form>
             <FormGroup controlId='totalSeats'>
-              <ControlLabel>Total Seats Free:  </ControlLabel>
+              <ControlLabel>Total Seats Free: </ControlLabel>
               <DropdownButton
                 title={this.state.numSeats}
                 id='totalSeats-dropdown'
@@ -84,7 +84,7 @@ class TripModal extends React.Component {
             </FormGroup>
 
             <FormGroup controlId='origin'>
-              <ControlLabel>Leaving From:  </ControlLabel>
+              <ControlLabel>Leaving From: </ControlLabel>
               <DropdownButton
                 title={this.state.origin}
                 id='origin-dropdown'
@@ -101,7 +101,7 @@ class TripModal extends React.Component {
             </FormGroup>
 
             <FormGroup controlId='destination'>
-              <ControlLabel>Destination:  </ControlLabel>
+              <ControlLabel>Destination: </ControlLabel>
               <DropdownButton
                 title={this.state.destination}
                 id='destination-dropdown'
