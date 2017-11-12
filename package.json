@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "concurrently -k \"npm run webpack\" \"npm run server\"",
+        "start": "\"npm run webpack\" \"npm run server\"",
         "webpack": "webpack",
         "server": "node ./Server/server.js",
         "dev": "concurrently -k \"npm run devWebpack\" \"npm run devServer\"",
