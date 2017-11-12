@@ -15,9 +15,10 @@ class Calendar extends React.Component {
     super(props)
     this.state = {
       profile: null,
+      eventList: myEventsList,
       timeslotStart: '',
       timeslotEnd: '',
-      currEvent: '',
+      currEvent: {},
       showTripModal: false,
       showJoinModal: false
     }
@@ -27,14 +28,24 @@ class Calendar extends React.Component {
     axios.get('/userInfo')
       .then(profile => this.setState({ profile: profile.data }, () => {
         console.log('profile', profile)
-        if (this.state.profile.waivers.length < 1 && !this.state.showModal) {
-          this.openModal()
-        }
       }))
   }
 
   handleOnSelectEvent (e) {
-    alert(e.title)
+    console.log('e in select', e)
+    this.setState({currEvent: {
+      title: e.title,
+      allDay: e.allDay,
+      start: e.start,
+      end: e.end,
+      origin: e.origin,
+      destination: e.destination,
+      freeSeats: e.freeSeats,
+      organizer: e.organizer,
+      riders: e.riders,
+      desc: e.desc
+    }})
+    this.setState({showJoinModal: true})
   }
 
   handleOnSelectSlot (slotInfo) {
@@ -93,7 +104,7 @@ class Calendar extends React.Component {
       <div>
         <BigCalendar
           {...this.props}
-          events={myEventsList}
+          events={this.state.eventList}
           views={['week', 'day']}
           step={60}
           defaultDate={new Date(2015, 3, 1)}
@@ -114,8 +125,9 @@ class Calendar extends React.Component {
         <Modal show={this.state.showJoinModal}>
           <JoinModal
             profile={this.state.profile}
-            cancelJoin={this.cancelJoin}
-            saveJoin={this.saveJoin}
+            cancelJoin={this.cancelJoin.bind(this)}
+            saveJoin={this.saveJoin.bind(this)}
+            currEvent={this.state.currEvent}
           />
         </Modal>
       </div>

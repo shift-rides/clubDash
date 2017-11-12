@@ -3,34 +3,24 @@ import PropTypes from 'prop-types'
 import {
   Modal,
   Button,
-  FormControl,
-  FormGroup,
-  ControlLabel,
   HelpBlock,
-  DropdownButton,
-  MenuItem
+  ListGroup,
+  ListGroupItem
 } from 'react-bootstrap'
 
 class JoinModal extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      origin: '',
-      destination: '',
-      start: '',
-      end: '',
-      freeSeats: '',
-      organizer: '',
-      riders: '',
-      description: ''
+      currEvent: props.currEvent
     }
   }
 
   cancelJoin () {
-    this.props.closeModal()
+    this.props.cancelJoin()
   }
   saveJoin () {
-    this.props.closeModal()
+    this.props.saveJoin()
   }
 
   render () {
@@ -40,53 +30,23 @@ class JoinModal extends React.Component {
           <Modal.Title>Join Trip</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <form>
-            <FormGroup controlId='totalSeats'>
-              <ControlLabel>Total Seats Free: </ControlLabel>
-              <DropdownButton
-                title={this.state.numSeats}
-                id='totalSeats-dropdown'
-                onSelect={(e) => this.handleNumSeatsChange(e)}
-              >
-                {this.state.availableNumbers.map((num, index) => {
-                  return (
-                    <MenuItem eventKey={num} key={index}>
-                      {num}
-                    </MenuItem>)
-                })}
-              </DropdownButton>
-            </FormGroup>
-
-            <FormGroup controlId='origin'>
-              <DropdownButton title='Origin' pullRight id='split-button-pull-right'>
-                {this.state.origins.map((location, index) => {
-                  return (<MenuItem key={index}> {location} </MenuItem>)
-                })}
-              </DropdownButton>
-            </FormGroup>
-
-            <FormGroup controlId='destinations'>
-              <DropdownButton title='Destination' pullRight id='split-button-pull-right'>
-                {this.state.destinations.map((location, index) => {
-                  return (<MenuItem key={index}> {location} </MenuItem>)
-                })}
-              </DropdownButton>
-            </FormGroup>
-
-            <FormGroup controlId='description'>
-              <ControlLabel>Description</ControlLabel>
-              <FormControl
-                type='integer'
-                placeholder='Enter a description for the trip.'
-                value={this.state.yearVal}
-                onChange={this.handleYearChange}
-              />
-            </FormGroup>
-          </form>
+          <Modal.Title>Organizer: {this.state.currEvent.organizer}</Modal.Title>
+          <Modal.Title>Description: {this.state.currEvent.desc}</Modal.Title>
+          <Modal.Title>Leaving from: {this.state.currEvent.origin}</Modal.Title>
+          <Modal.Title>Destination: {this.state.currEvent.destination}</Modal.Title>
+          <Modal.Title>Free Seats: {this.state.currEvent.freeSeats}</Modal.Title>
+          <Modal.Title>Start Time: {this.state.currEvent.start.toLocaleString()}</Modal.Title>
+          <Modal.Title>End Time: {this.state.currEvent.end.toLocaleString()}</Modal.Title>
+          <Modal.Title>Other Riders:</Modal.Title>
+          <ListGroup>
+            {this.state.currEvent.riders.map((rider, index) => {
+              return <ListGroupItem key={index}>{rider}</ListGroupItem>
+            })}
+          </ListGroup>
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={this.cancelJoin.bind(this)}>Cancel</Button>
-          <Button onClick={this.saveJoin.bind(this)}>Close</Button>
+          <Button onClick={this.saveJoin.bind(this)}>Join</Button>
           <HelpBlock />
         </Modal.Footer>
       </div>

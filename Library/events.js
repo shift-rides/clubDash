@@ -1,9 +1,15 @@
 export default [
   {
-    'title': 'All Day Event very long title',
+    'title': 'A crazy fun time.',
     'allDay': true,
     'start': new Date(2015, 3, 0),
-    'end': new Date(2015, 3, 1)
+    'end': new Date(2015, 3, 1),
+    origin: 'Brandeis',
+    destination: 'New York',
+    freeSeats: 3,
+    organizer: 'Tom',
+    riders: ['Ben', 'Akiba'],
+    desc: 'A fun trip.'
   },
   {
     'title': 'Long Event',
