@@ -39,7 +39,7 @@ class TripModal extends React.Component {
   }
 
   handleDescriptionChange (e) {
-    this.setState({descriptionVal: e.target.value})
+    this.setState({description: e.target.value})
   }
 
   cancelTrip () {
@@ -47,7 +47,13 @@ class TripModal extends React.Component {
   }
 
   saveTrip () {
-    this.props.saveTrip()
+    const information = {
+      numSeats: this.state.numSeats,
+      origin: this.state.origin,
+      destination: this.state.destination,
+      desc: this.state.desc
+    }
+    this.props.saveTrip(information)
   }
 
   render () {
@@ -116,8 +122,8 @@ class TripModal extends React.Component {
               <FormControl
                 type='integer'
                 placeholder='Enter a description for the trip.'
-                value={this.state.yearVal}
-                onChange={this.handleYearChange}
+                value={this.state.description}
+                onChange={this.handleDescriptionChange.bind(this)}
               />
             </FormGroup>
           </form>

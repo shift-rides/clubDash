@@ -27,7 +27,7 @@ class Calendar extends React.Component {
   componentWillMount () {
     axios.get('/userInfo')
       .then(profile => this.setState({ profile: profile.data }, () => {
-        console.log('profile', profile)
+    //    console.log('profile', profile)
       }))
   }
 
@@ -72,12 +72,18 @@ class Calendar extends React.Component {
     this.setState({ showTripModal: false })
   }
   saveTrip (information) {
-    // axios.post('/saveEvent', information)
-    //   .then((res) => {
-    //     if (res.data.success) { // TODO: Make sure the waiver was finsihed
-    //       this.setState({ showModal: false })
-    //     }
-    //   })
+    const newInfo= Object.assign(information,
+      { profile: this.state.profile,
+        timeslotStart: this.state.timeslotStart,
+        timeslotEnd: this.state.timeslotEnd });
+    console.log("new checking info",newInfo);;
+
+    axios.post('/saveEvent', information)
+      .then((res) => {
+        if (res.data.success) { // TODO: Make sure that the state of the
+          this.setState({ showModal: false })
+        }
+      })
     this.setState({ showTripModal: false })
   }
   cancelJoin (information) {
