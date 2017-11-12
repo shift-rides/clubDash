@@ -4,13 +4,9 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "concurrently -k \"npm run webpack\" \"npm run server\"",
-        "webpack": "webpack",
-        "server": "node ./Server/server.js",
-        "dev": "concurrently -k \"npm run devWebpack\" \"npm run devServer\"",
-        "devWebpack": "webpack --watch",
-        "devServer": "node ./Server/server.js"
+      "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+      "prod": "NODE_ENV=production node server.js",
+      "postinstall": "webpack -p"
     },
     "repository": {
         "type": "git",
