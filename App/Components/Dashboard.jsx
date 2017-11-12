@@ -85,12 +85,12 @@ class Dashboard extends React.Component {
               component={Clubs}
             />
             <Route
-              path='/'
-              component={Calendar}
-            />
-            <Route
               path='/profile'
               component={Profile}
+            />
+            <Route
+              path='/'
+              component={Calendar}
             />
           </Switch>
         </Jumbotron>

@@ -19,10 +19,12 @@ class TripModal extends React.Component {
       numSeats: 'Select',
       origin: 'Select',
       destination: 'Select',
-      description: '',
+      desc: '',
       availableNumbers: AVAILABLE_NUMBERS,
       origins: ORIGINS,
-      destinations: DESTINATIONS
+      allOrigins: ORIGINS,
+      destinations: DESTINATIONS,
+      allDestinations: DESTINATIONS
     }
   }
 
@@ -39,7 +41,7 @@ class TripModal extends React.Component {
   }
 
   handleDescriptionChange (e) {
-    this.setState({description: e.target.value})
+    this.setState({desc: e.target.value})
   }
 
   cancelTrip () {
