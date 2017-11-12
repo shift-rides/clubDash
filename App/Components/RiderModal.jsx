@@ -32,10 +32,10 @@ class RiderModal extends React.Component {
     return (
       <div className='join-modal'>
         <Modal.Header>
-          <Modal.Title>{this.state.currEvent.organizer}'s Trip</Modal.Title>
+          <Modal.Title>{this.state.currEvent.organizerName}'s Trip</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Modal.Title>Organizer: {this.state.currEvent.organizer}</Modal.Title>
+          <Modal.Title>Organizer: {this.state.currEvent.organizerName}</Modal.Title>
           <Modal.Title>Description: {this.state.currEvent.desc}</Modal.Title>
           <Modal.Title>Leaving from: {this.state.currEvent.origin}</Modal.Title>
           <Modal.Title>Destination: {this.state.currEvent.destination}</Modal.Title>
@@ -45,10 +45,11 @@ class RiderModal extends React.Component {
           <Modal.Title>Other Riders:</Modal.Title>
           <ListGroup>
             {this.state.currEvent.riders.map((rider, index) => {
-              if (rider === this.props.profile.name) {
-                return <ListGroupItem key={index}>{rider}<Button onClick={this.leaveTrip.bind(this)}>Click to Leave Trip</Button></ListGroupItem>
+              if (rider.name === this.props.profile.name) {
+                console.log('rider', rider)
+                return <ListGroupItem key={index}>{rider.name}<Button onClick={this.leaveTrip.bind(this)}>Click to Leave Trip</Button></ListGroupItem>
               } else {
-                return <ListGroupItem key={index}>{rider}</ListGroupItem>
+                return <ListGroupItem key={index}>{rider.name}</ListGroupItem>
               }
             })}
           </ListGroup>

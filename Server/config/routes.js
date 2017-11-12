@@ -121,9 +121,10 @@ Event.update(
 
   app.post('/joinEvent', (req, res) => {
     console.log('req body in join', req.body)
-    Event.findOneAndUpdate({_id: req.body.eventID}, {
-      $push: {riders: req.body.userID}
-    }).then((err, res) => {
+    Event.findOneAndUpdate({_id: req.body.eventID},
+      {$push: {'riders': req.body.userID}},
+      {safe: true, upsert: true, new : true},
+    ).then((err, res) => {
       console.log('hi1')
       if (err) {
         console.log('err', err)

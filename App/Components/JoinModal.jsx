@@ -31,7 +31,6 @@ class JoinModal extends React.Component {
   render () {
     return (
       <div className='trip-modal'>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <Modal.Header>
           <div className="trip-jumbotron">
             <Modal.Title>Join Trip</Modal.Title>
@@ -48,7 +47,7 @@ class JoinModal extends React.Component {
           <Modal.Title>Other Riders:</Modal.Title>
           <ListGroup>
             {this.state.currEvent.riders.map((rider, index) => {
-              return <ListGroupItem key={index}>{rider}</ListGroupItem>
+              return <ListGroupItem key={index}>{rider.name}</ListGroupItem>
             })}
           </ListGroup>
         </Modal.Body>

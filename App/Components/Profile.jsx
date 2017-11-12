@@ -17,7 +17,10 @@ class Profile extends React.Component {
   }
   componentWillMount () {
     axios.get('/userInfo')
-      .then(profile => this.setState({ profile: profile.data }))
+      .then(profile => {
+        console.log('profile', profile)
+        this.setState({ profile: profile.data })
+      })
   }
 
   leaveTrip () {
