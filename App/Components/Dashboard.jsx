@@ -57,21 +57,21 @@ class Dashboard extends React.Component {
     return (
       <div>
         <Navbar>
-          <Nav>
+          <Nav pullLeft>
             <NavDropdown id='basic-nav-dropdown' title={<Glyphicon glyph='menu-hamburger' />}>
-              <MenuItem href='#/'>Home</MenuItem>
-              <MenuItem href='#/profile'>Profile</MenuItem>
+              <MenuItem href='#/'>HOME</MenuItem>
+              <MenuItem href='#/profile'>PROFILE</MenuItem>
             </NavDropdown>
+            <Navbar.Header>
+              <Navbar.Brand>
+                <div className='navbar-brand'>
+                  <img src="./shift_logo.png" />
+                </div>
+              </Navbar.Brand>
+            </Navbar.Header>
           </Nav>
-          <Navbar.Header>
-            <Navbar.Brand>
-              <div className='navbar-brand'>
-                <img src="./shift_logo.png" />
-              </div>
-            </Navbar.Brand>
-          </Navbar.Header>
           <Nav pullRight>
-            <NavItem onClick={() => { axios.post('/logout') }} href='/login'>Logout</NavItem>
+            <NavItem onClick={() => { axios.post('/logout') }} href='/login'>LOGOUT</NavItem>
           </Nav>
         </Navbar>
         <Jumbotron>
