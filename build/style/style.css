@@ -1,3 +1,7 @@
+.navbar{
+  margin-bottom:5px;
+}
+
 .contents {
   margin: 0px 50px
 }
@@ -97,6 +101,7 @@ button.rbc-input::-moz-focus-inner {
 .rbc-today {
   background-color: #eaf6ff;
 }
+
 .rbc-toolbar {
   display: -webkit-flex;
   display: -ms-flexbox;
