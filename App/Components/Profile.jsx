@@ -12,7 +12,8 @@ class Profile extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      profile: DUMMY_EVENTS
+      profile: DUMMY_EVENTS,
+      profileId:null
     }
   }
   componentWillMount () {
@@ -20,11 +21,22 @@ class Profile extends React.Component {
       .then(profile => {
         console.log('profile', profile)
         this.setState({ profile: profile.data.eventRegistered })
+        this.setState({ profileId: profile.data._id})
       })
   }
 
-  leaveTrip () {
-    console.log('trip left!')
+  leaveTrip (e) {
+    console.log(e);
+    const info = {riderId: this.state.profileId, eventId: e._id }
+    console.log(info)
+    console.log('trip left!');
+    axios.post('/removeUserFromEvent', info)
+      .then((res) => {
+        if (res.data.success) {
+          console.log("I'm done with deleting")
+          this.forceUpdate();
+        }
+      })
   }
 
   deleteAccount () {
@@ -39,7 +51,7 @@ class Profile extends React.Component {
         <ListGroup>
           {this.state.profile.map((event, index) => {
             console.log()
-            return <ListGroupItem key={index}>{event.desc}'s Trip: <Button onClick={this.leaveTrip.bind(this)}>Click to Leave Trip</Button></ListGroupItem>
+            return <ListGroupItem key={index}>{event.desc}'s Trip: <Button onClick={this.leaveTrip.bind(this,event)}>Click to Leave Trip</Button></ListGroupItem>
           })}
         </ListGroup>
         <Button onClick={this.deleteAccount}>Delete Account</Button>
