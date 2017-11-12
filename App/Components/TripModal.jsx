@@ -22,9 +22,7 @@ class TripModal extends React.Component {
       desc: '',
       availableNumbers: AVAILABLE_NUMBERS,
       origins: ORIGINS,
-      allOrigins: ORIGINS,
-      destinations: DESTINATIONS,
-      allDestinations: DESTINATIONS
+      destinations: DESTINATIONS
     }
   }
 
@@ -33,10 +31,17 @@ class TripModal extends React.Component {
   }
 
   handleOriginChange (origin) {
-    this.setState({origin})
+    const filteredDestinations = DESTINATIONS.filter(destination => {
+      return destination !== origin
+    })
+    this.setState({origin, destinations: filteredDestinations})
   }
 
   handleDestinationChange (destination) {
+    const filteredOrigins = ORIGINS.filter(origin => {
+      return origin !== destination
+    })
+    this.setState({origins: filteredOrigins})
     this.setState({destination})
   }
 
@@ -110,7 +115,7 @@ class TripModal extends React.Component {
                 onSelect={(destination) => this.handleDestinationChange(destination)}
                 noCaret
               >
-                {this.state.origins.map((location, index) => {
+                {this.state.destinations.map((location, index) => {
                   return (
                     <MenuItem key={index} eventKey={location}>
                       {location}
