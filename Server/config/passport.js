@@ -33,18 +33,18 @@ const passportHelper = (app) => {
             waivers: [],
             admin: false,
             clubsLeading: [],
-          });
+          })
           newUser.save((saveErr) => {
             if (saveErr) {
-              done(saveErr, null);
+              done(saveErr, null)
             } else {
-              done(null, newUser);
+              done(null, newUser)
             }
-          });
+          })
         }
-      });
-    }),
-  ));
+      })
+    })
+  ))
 
   passport.serializeUser((user, done) => {
     done(null, user.id);
