@@ -22,7 +22,9 @@ class TripModal extends React.Component {
       description: '',
       availableNumbers: AVAILABLE_NUMBERS,
       origins: ORIGINS,
-      destinations: DESTINATIONS
+      allOrigins: ORIGINS,
+      destinations: DESTINATIONS,
+      allDestinations: DESTINATIONS
     }
   }
 
