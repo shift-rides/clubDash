@@ -63,6 +63,30 @@ const routeHelper = (app) => {
     );
   });
 
+// Saving an Event to DB
+  app.post('/saveEvent', (req, res) => {
+    console.log("save event got hit backend",req.body);
+
+    const newEvent = new Event({
+      allDay: false,
+      start: req.body.timeslotStart,
+      end: req.body.timeslotEnd,
+      origin: req.body.origin,
+      destination: req.body.destination,
+      organizer: req.body.profile._id,
+      riders: [],
+      freeSeats: req.body.numSeats,
+      desc: req.body.description
+      });
+    newEvent.save((saveErr) => {
+      if (saveErr) {
+        console.log("err",saveErr)
+      } else {
+       res.json({ success: true });
+      }
+    });
+  });
+
   app.post('/mainWaiver', (req, res) => {
     if (req.body.email !== req.user.email) {
       res.json({ success: false });
@@ -77,24 +101,6 @@ const routeHelper = (app) => {
           user.save(() => res.json({ success: true }));
         });
 
-        const newEvent = new Event({
-          name: "hello",
-          allDay: true,
-          // start:'' ,
-          // end: '',
-          startLoc: "Brandeis",
-          destination: "New York",
-        //  driver: [],
-          occupiedSeats:3,
-          totalSeats: 4,
-        });
-        newEvent.save((saveErr) => {
-          if (saveErr) {
-            console.log("err",saveErr)
-          } else {
-        //    res.json({ success: true });
-          }
-        });
       });
     }
   });
