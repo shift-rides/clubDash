@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+// const Event = require('./Event');
 
 const userSchema = mongoose.Schema({
   googleId: String,
@@ -7,6 +8,12 @@ const userSchema = mongoose.Schema({
   email: String,
   waivers: [mongoose.Schema.Types.ObjectId],
   clubsLeading: [mongoose.Schema.Types.ObjectId],
+  eventRegistered:[
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Event'
+      }
+    ],
   admin: Boolean,
 });
 

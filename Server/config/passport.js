@@ -14,6 +14,9 @@ const passportHelper = (app) => {
         if (err) {
           done(err, null);
         } else if (user) {
+          if(profile.emails[0].value.indexOf('brandeis.edu') === -1){
+            done("Please sign in with your Brandeis email", null);
+          }
           if (profile.photos[0].value !== user.imageUrl) {
             user.imageUrl = profile.photos[0].value;
             user.save(() => done(null, user));

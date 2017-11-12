@@ -12,6 +12,8 @@
         "devWebpack": "webpack --watch",
         "devServer": "node ./Server/server.js"
     },
+   
+
     "repository": {
         "type": "git",
         "url": "git+https://github.com/nstraus/clubDash.git"

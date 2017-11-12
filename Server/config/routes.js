@@ -1,7 +1,7 @@
 const passport = require('passport');
 const path = require('path');
 
-const { User, Waiver, Club } = require('../models/models');
+const { User, Waiver, Club, Event} = require('../models/models');
 
 const routeHelper = (app) => {
   app.post('/login',
@@ -36,6 +36,7 @@ const routeHelper = (app) => {
 
   app.get('/userInfo', (req, res) => {
     res.json(req.user);
+    console.log("here1")
   });
 
   app.post('/clubs', (req, res) => {
@@ -46,6 +47,9 @@ const routeHelper = (app) => {
       res.json({ success: false });
     }
   });
+
+
+
   app.get('/clubs', (req, res) => {
     Club.find((err, clubs) => res.json(clubs));
   });
@@ -72,6 +76,25 @@ const routeHelper = (app) => {
         newWaiver.save(() => {
           user.waivers.push(newWaiver.id);
           user.save(() => res.json({ success: true }));
+        });
+
+        const newEvent = new Event({
+          name: "hello",
+          allDay: true,
+          // start:'' ,
+          // end: '',
+          startLoc: "Brandeis",
+          destination: "New York",
+        //  driver: [],
+          occupiedSeats:3,
+          totalSeats: 4,
+        });
+        newEvent.save((saveErr) => {
+          if (saveErr) {
+            console.log("err",saveErr)
+          } else {
+        //    res.json({ success: true });
+          }
         });
       });
     }

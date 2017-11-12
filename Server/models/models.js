@@ -7,5 +7,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 const User = require('./User');
 const Waiver = require('./Waiver');
 const Club = require('./Club');
+const Event = require('./Event');
 
-module.exports = { User, Waiver, Club };
+
+module.exports = { User, Waiver, Club, Event };

@@ -88,7 +88,7 @@ class Dashboard extends React.Component {
         <Modal show={this.state.showModal}>
           <MainWaiver profile={this.state.profile} closeModal={this.closeModal} />
         </Modal>
-      </div >
+      </div>
     );
   }
 }
