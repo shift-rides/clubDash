@@ -71,8 +71,8 @@ class JoinModal extends React.Component {
             </Modal.Title>
           </div>
           <div className="join-modal">
-            <Modal.Title>Free Seats: {this.state.currEvent.freeSeats}</Modal.Title>
-            <Modal.Title>Other Riders:</Modal.Title>
+            <Modal.Title>FREE SEATS {this.state.currEvent.freeSeats}</Modal.Title>
+            <Modal.Title>OTHER RIDERS</Modal.Title>
             <ListGroup>
               {this.state.currEvent.riders.map((rider, index) => {
                 return <ListGroupItem key={index}>{rider}</ListGroupItem>
