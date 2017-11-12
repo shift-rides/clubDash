@@ -20,8 +20,9 @@ class RiderModal extends React.Component {
     }
   }
 
-  leaveTrip () {
-    this.props.leaveTrip()
+  leaveTrip (e) {
+    const info = {riderId: e, eventId: this.state.currEvent._id }
+    this.props.leaveTrip(info)
   }
 
   closeRiderModal () {
@@ -47,7 +48,7 @@ class RiderModal extends React.Component {
             {this.state.currEvent.riders.map((rider, index) => {
               if (rider.name === this.props.profile.name) {
                 console.log('rider', rider)
-                return <ListGroupItem key={index}>{rider.name}<Button onClick={this.leaveTrip.bind(this)}>Click to Leave Trip</Button></ListGroupItem>
+                return <ListGroupItem key={index}>{rider.name}<Button onClick={this.leaveTrip.bind(this,rider._id)}>Click to Leave Trip</Button></ListGroupItem>
               } else {
                 return <ListGroupItem key={index}>{rider.name}</ListGroupItem>
               }

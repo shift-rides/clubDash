@@ -190,7 +190,18 @@ class Calendar extends React.Component {
 }
 
   leaveTrip (information) {
-    this.setState({ showRiderModal: false })
+    axios.post('/removeUserFromEvent', information)
+      .then((res) => {
+        if (res.data.success) {
+        axios.get('/eventInfo/' + this.state.currEvent._id).then(event => {
+          // let newInfo = [];
+          // console.log('riders name', event.data);
+          // console.log("currEvent is ", this.state.currEvent);
+          this.setState({currEvent: event.data})
+        this.setState({ showRiderModal: false })
+       })
+      }
+  })
     console.log('rider has left trip')
   }
 

@@ -12,14 +12,14 @@ class Profile extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      profile: {}
+      profile: DUMMY_EVENTS
     }
   }
   componentWillMount () {
-    axios.get('/userInfo')
+    axios.get('/userInfoPapulate')
       .then(profile => {
         console.log('profile', profile)
-        this.setState({ profile: profile.data })
+        this.setState({ profile: profile.data.eventRegistered })
       })
   }
 
@@ -37,8 +37,9 @@ class Profile extends React.Component {
         <Image src={this.state.profile.imageUrl} circle />
         <p>{this.state.profile.name}</p>
         <ListGroup>
-          {DUMMY_EVENTS.map((event, index) => {
-            return <ListGroupItem key={index}>{event.organizer}'s Trip: <Button onClick={this.leaveTrip.bind(this)}>Click to Leave Trip</Button></ListGroupItem>
+          {this.state.profile.map((event, index) => {
+            console.log()
+            return <ListGroupItem key={index}>{event.desc}'s Trip: <Button onClick={this.leaveTrip.bind(this)}>Click to Leave Trip</Button></ListGroupItem>
           })}
         </ListGroup>
         <Button onClick={this.deleteAccount}>Delete Account</Button>

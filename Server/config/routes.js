@@ -38,6 +38,16 @@ const routeHelper = (app) => {
     res.json(req.user)
   })
 
+  app.get('/userInfoPapulate', (req, res) => {
+    User.findOne({ _id: req.user._id})
+    .populate('eventRegistered') // <==
+    .exec(function(err, events){
+      console.log(events);
+         res.json((events));
+    });
+  })
+
+
   app.get('/userInfo/:userId', (req, res) => {
     User.findById(req.params.userId, (err, profile) => res.json(profile))
   })
@@ -90,7 +100,11 @@ Event.update(
   {_id: req.body.eventId},
   { $pull: {riders: req.body.riderId } }
 ).then( err => {
-  res.json({ success: true })
+ User.update({
+   _id: req.body.riderId
+ },{ $pull: {eventRegistered: req.body.eventId }}
+).then(err =>   res.json({ success: true })
+ )
 });
 });
 
@@ -124,12 +138,26 @@ Event.update(
     Event.findOneAndUpdate({_id: req.body.eventID},
       {$push: {'riders': req.body.userID}},
       {safe: true, upsert: true, new : true},
-    ).then((err, res) => {
+    ).then((err) => {
       console.log('hi1')
-      if (err) {
-        console.log('err', err)
+      if (false) {
+        console.log('there is err 1', err)
       } else {
         console.log('res', res)
+
+        ///
+        User.findOneAndUpdate({_id: req.body.userID},
+          {$push: {'eventRegistered': req.body.eventID}},
+          {safe: true, upsert: true, new : true},
+        ).then((err) => {
+          console.log('hi1')
+          if (false) {
+            console.log('there is an error', err)
+          } else {
+            res.json({success: true})
+          }
+        })
+        ///
       }
     })
   })
