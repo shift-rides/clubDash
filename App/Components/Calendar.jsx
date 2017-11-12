@@ -2,26 +2,35 @@ import React from 'react'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 import myEventsList from '../../Library/events'
-import {Modal} from 'react-bootstrap'
+import {Modal, MenuItem, ButtonToolbar, DropdownButton, FormGroup} from 'react-bootstrap'
 import TripModal from './TripModal'
 import JoinModal from './JoinModal'
 import EditModal from './EditModal'
 import RiderModal from './RiderModal'
 import axios from 'axios'
+import {AVAILABLE_NUMBERS, ORIGINS, DESTINATIONS} from '../../Library/const'
 
 BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
+
 class Calendar extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       profile: null,
+      allEvents: myEventsList,
       eventList: myEventsList,
       timeslotStart: '',
       timeslotEnd: '',
       currEvent: {},
       showTripModal: false,
       showJoinModal: false,
-      showRiderModal: false
+      showRiderModal: false,
+      originFilter: 'All',
+      destinationFilter: 'All',
+      freeSeatsFilter: 'All',
+      originFilterButton: 'From',
+      destinationFilterButton: 'To',
+      freeSeatsFilterButton: 'Seats Free'
     }
   }
 
@@ -33,11 +42,7 @@ class Calendar extends React.Component {
   }
 
   handleOnSelectEvent (e) {
-    console.log('event', e)
-    console.log('profile in handle', this.state.profile)
     this.setState({currEvent: e})
-    console.log('this.state', this.state)
-    console.log('riders', e.riders)
     if (this.state.profile.name === e.organizer) {
       this.setState({showEditModal: true})
     } else if (e.riders.indexOf(this.state.profile.name) !== -1) {
@@ -48,12 +53,6 @@ class Calendar extends React.Component {
   }
 
   handleOnSelectSlot (slotInfo) {
-    // alert(
-    //   `selected slot: \n\nstart ${slotInfo.start.toLocaleString()} ` +
-    //   `\nend: ${slotInfo.end.toLocaleString()}` +
-    //   `\naction: ${slotInfo.action}`
-    // )
-
     this.setState({
       timeslotStart: slotInfo.start.toLocaleString(),
       timeslotEnd: slotInfo.end.toLocaleString(),
@@ -130,9 +129,81 @@ class Calendar extends React.Component {
     console.log('rider modal closed')
   }
 
+  handleOriginFilterSelect (origin) {
+    if (origin === 'All') {
+      this.state.originFilterButton = 'From'
+    } else {
+      this.state.originFilterButton = 'From ' + origin
+    }
+    this.state.originFilter = origin
+    this.applyFilters()
+  }
+
+  handleDestinationFilterSelect (destination) {
+    if (destination === 'All') {
+      this.state.destinationFilterButton = 'To'
+    } else {
+      this.state.destinationFilterButton = 'To ' + destination
+    }
+    this.state.destinationFilter = destination
+    this.applyFilters()
+  }
+
+  handleFreeSeatsSelect (freeSeats) {
+    if (freeSeats === 'All') {
+      this.state.freeSeatsFilterButton = 'Seats Free'
+    } else {
+      this.state.freeSeatsFilterButton = 'Seats Free: ' + freeSeats
+    }
+    this.state.freeSeatsFilter = freeSeats
+    this.applyFilters()
+  }
+
+  applyFilters () {
+    let eventList = this.state.allEvents
+    eventList = eventList.filter(event => {
+      return this.state.originFilter === 'All' || event.origin === this.state.originFilter
+    })
+    eventList = eventList.filter(event => {
+      return this.state.destinationFilter === 'All' || event.destination === this.state.destinationFilter
+    })
+    eventList = eventList.filter(event => {
+      return this.state.freeSeatsFilter === 'All' || event.freeSeats <= parseInt(this.state.freeSeatsFilter)
+    })
+    this.setState({eventList})
+  }
+
+  renderFilterButtons () {
+    return (
+      <ButtonToolbar style={{display: 'flex', justifyContent: 'center'}}>
+        <DropdownButton title={this.state.originFilterButton} key='1' id='from-filter' onSelect={(e) => this.handleOriginFilterSelect(e)}>
+          <MenuItem eventKey='All' key='0'>All</MenuItem>
+          {ORIGINS.map((origin, index) => {
+            return (<MenuItem eventKey={origin} key={index}>{origin}</MenuItem>)
+          })}
+        </DropdownButton>
+        <DropdownButton title={this.state.destinationFilterButton} key='2' id='to-filter' onSelect={(e) => this.handleDestinationFilterSelect(e)}>
+          <MenuItem eventKey='All' key='0'>All</MenuItem>
+          {DESTINATIONS.map((destination, index) => {
+            return (<MenuItem eventKey={destination} key={index}>{destination}</MenuItem>)
+          })}
+        </DropdownButton>
+        <DropdownButton title={this.state.freeSeatsFilterButton} key='3' id='seats-filter' onSelect={(e) => this.handleFreeSeatsSelect(e)}>
+          <MenuItem eventKey='All' key='0'>All</MenuItem>
+          {AVAILABLE_NUMBERS.map((num, index) => {
+            return (<MenuItem eventKey={num} key={index}>{num}</MenuItem>)
+          })}
+        </DropdownButton>
+      </ButtonToolbar>
+    )
+  }
+
   render () {
     return (
       <div>
+        <div>
+          {this.renderFilterButtons()}
+        </div>
         <BigCalendar
           {...this.props}
           events={this.state.eventList}
