@@ -34,8 +34,19 @@ const routeHelper = (app) => {
     res.redirect('/');
   });
 
+
   app.get('/userInfo', (req, res) => {
     res.json(req.user);
+  });
+
+  app.get('/userInfo/:userId', (req, res) => {
+    User.findById(req.params.userId, (err, profile) => res.json(profile));
+  });
+
+  app.get('/events', (req, res) => {
+    Event.find().lean().exec(function (err, users) {
+     res.json((users));
+});
   });
 
   app.post('/clubs', (req, res) => {
@@ -55,6 +66,8 @@ const routeHelper = (app) => {
   app.get('/clubs/:clubId', (req, res) => {
     Club.findById(req.params.clubId, (err, club) => res.json(club));
   });
+
+
   app.post('/clubs/:clubId', (req, res) => {
     Club.findOneAndUpdate(req.params.clubId,
       { $push: { members: req.user._id } },
@@ -76,7 +89,7 @@ const routeHelper = (app) => {
       organizer: req.body.profile._id,
       riders: [],
       freeSeats: req.body.numSeats,
-      desc: req.body.description
+      desc: req.body.desc
       });
     newEvent.save((saveErr) => {
       if (saveErr) {

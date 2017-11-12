@@ -20,7 +20,9 @@ class Calendar extends React.Component {
       timeslotEnd: '',
       currEvent: {},
       showTripModal: false,
-      showJoinModal: false
+      showJoinModal: false,
+      timeslotStartMoongose:null,
+      timeslotEndMoongose:null
     }
   }
 
@@ -28,24 +30,46 @@ class Calendar extends React.Component {
     axios.get('/userInfo')
       .then(profile => this.setState({ profile: profile.data }, () => {
     //    console.log('profile', profile)
-      }))
+  }));
+
+  axios.get('/events')
+    .then(newEvent => this.setState({b: newEvent.data}, () => {
+      newEvent.data.forEach(function(elem) {
+      console.log("element is ", elem);
+      elem.start = new Date(elem['start']);
+      elem.end = new Date(elem['end']);
+      console.log('elem is ', elem);
+      });
+    this.setState({eventList: newEvent.data});
+    }));
   }
 
+
   handleOnSelectEvent (e) {
-    console.log('e in select', e)
-    this.setState({currEvent: {
-      title: e.title,
-      allDay: e.allDay,
-      start: e.start,
-      end: e.end,
-      origin: e.origin,
-      destination: e.destination,
-      freeSeats: e.freeSeats,
-      organizer: e.organizer,
-      riders: e.riders,
-      desc: e.desc
-    }})
-    this.setState({showJoinModal: true})
+
+var organizerName;
+    axios.get('/userInfo/'+e.organizer)
+      .then(profile => {
+        // this.setState({ profile: profile.data
+        // })
+        organizerName = profile.data.name;
+        //console.log(organizerName);
+        this.setState({currEvent: {
+          title: e.title,
+          allDay: e.allDay,
+          start: e.start,
+          end: e.end,
+          origin: e.origin,
+          destination: e.destination,
+          freeSeats: e.freeSeats,
+          organizer: organizerName,
+          riders: e.riders,
+          desc: e.desc
+        }})
+        this.setState({showJoinModal: true})
+      });
+
+
   }
 
   handleOnSelectSlot (slotInfo) {
@@ -54,10 +78,11 @@ class Calendar extends React.Component {
     //   `\nend: ${slotInfo.end.toLocaleString()}` +
     //   `\naction: ${slotInfo.action}`
     // )
-
     this.setState({
       timeslotStart: slotInfo.start.toLocaleString(),
       timeslotEnd: slotInfo.end.toLocaleString(),
+      timeslotStartMoongose:slotInfo.start,
+      timeslotEndMoongose:slotInfo.end,
       showTripModal: true})
   }
 
@@ -71,21 +96,33 @@ class Calendar extends React.Component {
     console.log('this', this)
     this.setState({ showTripModal: false })
   }
+  //save a new trip
   saveTrip (information) {
     const newInfo= Object.assign(information,
       { profile: this.state.profile,
         timeslotStart: this.state.timeslotStart,
-        timeslotEnd: this.state.timeslotEnd });
+        timeslotEnd: this.state.timeslotEnd,
+      });
     console.log("new checking info",newInfo);;
-
     axios.post('/saveEvent', information)
       .then((res) => {
         if (res.data.success) { // TODO: Make sure that the state of the
           this.setState({ showModal: false })
+          axios.get('/events')
+            .then(newEvent => this.setState({b: newEvent.data}, () => {
+              newEvent.data.forEach(function(elem) {
+        console.log("element is ", elem);
+        elem.start = new Date(elem['start']);
+        elem.end = new Date(elem['end']);
+        console.log('elem is ', elem);
+        });
+        this.setState({eventList: newEvent.data});
+         }));
         }
       })
     this.setState({ showTripModal: false })
   }
+  // cancel a join modal
   cancelJoin (information) {
     // axios.post('/saveEvent', information)
     //   .then((res) => {
@@ -95,6 +132,7 @@ class Calendar extends React.Component {
     //   })
     this.setState({ showJoinModal: false })
   }
+
   saveJoin (information) {
     // axios.post('/saveEvent', information)
     //   .then((res) => {
