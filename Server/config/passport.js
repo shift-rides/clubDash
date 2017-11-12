@@ -10,13 +10,15 @@ const passportHelper = (app) => {
     callbackURL: 'http://localhost:3000/auth/google/callback',
   },
     ((accessToken, refreshToken, profile, done) => {
+      // console.log("email value",profile.emails[0].value);
       User.findOne({ googleId: profile.id }, (err, user) => {
+        if(profile.emails[0].value.indexOf('brandeis.edu') === -1){
+          console.log("im here testing");
+          done(err, null);
+        }
         if (err) {
           done(err, null);
         } else if (user) {
-          if(profile.emails[0].value.indexOf('brandeis.edu') === -1){
-            done("Please sign in with your Brandeis email", null);
-          }
           if (profile.photos[0].value !== user.imageUrl) {
             user.imageUrl = profile.photos[0].value;
             user.save(() => done(null, user));
