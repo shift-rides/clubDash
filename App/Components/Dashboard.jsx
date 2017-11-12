@@ -60,12 +60,14 @@ class Dashboard extends React.Component {
           <Nav>
             <NavDropdown id='basic-nav-dropdown' title={<Glyphicon glyph='menu-hamburger' />}>
               <MenuItem href='#/'>Home</MenuItem>
-              <MenuItem href='#/clubs'>Clubs</MenuItem>
+              <MenuItem href='#/profile'>Profile</MenuItem>
             </NavDropdown>
           </Nav>
           <Navbar.Header>
             <Navbar.Brand>
-              ClubDash
+              <div className='navbar-brand'>
+                <img src="./shift_logo.png" />
+              </div>
             </Navbar.Brand>
           </Navbar.Header>
           <Nav pullRight>
