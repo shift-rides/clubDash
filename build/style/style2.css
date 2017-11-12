@@ -1,8 +1,104 @@
 .navbar{
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 }
 
 .jumbotron{
   padding-bottom: 15px;
   padding-top: 15px;
+}
+
+.navbar-bar {
+  color: 691142;
+}
+
+.navbar-brand {
+  font-size: 30px;
+  color: white;
+}
+
+.navbar-brand>img {
+  height: 22px;
+}
+
+
+.trip-jumbotron .modal-title{
+  border-radius: 10px;
+  font-size: 30px;
+  color: white;
+  text-align: center;
+  background: #60b0f4;
+  font-family: 'Helvetica', Arial, sans-serif;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.trip-modal {
+  color: #60b0f4;
+  font-family: 'Helvetica', Arial, sans-serif;
+  font-size: 14px;
+  padding-top: 2px;
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: 2px;
+}
+
+.trip-total-button .btn-group {
+  left: 389px;
+}
+
+.trip-origin-button .btn-group {
+  left: 404px;
+}
+
+.trip-destination-button .btn-group {
+  left: 420px;
+}
+
+.trip-footer .btn-default {
+}
+
+html, body {
+  background: #60b0f4;
+  font-family: 'Helvetica', Arial, sans-serif;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.modal {
+  opacity: 0;
+  padding: 50px;
+  position: absolute;
+  z-index: 1100;
+  -webkit-transition: opacity 200ms linear 200ms;
+  -moz-transition: opacity 200ms linear 200ms;
+  -ms-transition: opacity 200ms linear 200ms;
+  -o-transition: opacity 200ms linear 200ms;
+  transition: opacity 200ms linear 200ms;
+}
+
+.modal_info {
+  background: #FCF9F2;
+  padding: 50px 100px;
+  text-align: center;
+}
+
+.modal_overlay {
+  background: rgba(0, 0, 0, 0.5);
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  overflow: auto;
+  position: fixed;
+  right: 0;
+  top: 0;
+  visibility: hidden;
+  z-index: 900;
+  -webkit-transition: opacity 200ms linear;
+  -moz-transition: opacity 200ms linear;
+  -ms-transition: opacity 200ms linear;
+  -o-transition: opacity 200ms linear;
+  transition: opacity 200ms linear;
 }

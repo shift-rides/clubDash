@@ -65,7 +65,9 @@ class Dashboard extends React.Component {
           </Nav>
           <Navbar.Header>
             <Navbar.Brand>
-              Shift
+              <div className='navbar-brand'>
+                <img src="./shift_logo.png" />
+              </div>
             </Navbar.Brand>
           </Navbar.Header>
           <Nav pullRight>

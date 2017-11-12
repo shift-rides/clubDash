@@ -26,9 +26,12 @@ class JoinModal extends React.Component {
 
   render () {
     return (
-      <div className='join-modal'>
+      <div className='trip-modal'>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <Modal.Header>
-          <Modal.Title>Join Trip</Modal.Title>
+          <div className="trip-jumbotron">
+            <Modal.Title>Join Trip</Modal.Title>
+          </div>
         </Modal.Header>
         <Modal.Body>
           <Modal.Title>Organizer: {this.state.currEvent.organizerName}</Modal.Title>
