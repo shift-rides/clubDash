@@ -30,7 +30,9 @@ class Calendar extends React.Component {
       freeSeatsFilter: 'All',
       originFilterButton: 'From',
       destinationFilterButton: 'To',
-      freeSeatsFilterButton: 'Seats Free'
+      freeSeatsFilterButton: 'Seats Free',
+      origins: ORIGINS,
+      destinations: DESTINATIONS
     }
   }
 
@@ -109,8 +111,7 @@ class Calendar extends React.Component {
 
     axios.post('/saveEvent', newInfo)
       .then((res) => {
-        if (res.data.success) { // TODO: Make sure that the state of the
-          this.setState({ showModal: false })
+        if (res.data.success) {
           axios.get('/events')
             .then(newEvent => this.setState({b: newEvent.data}, () => {
               newEvent.data.forEach(elem => {
@@ -129,6 +130,20 @@ class Calendar extends React.Component {
   }
 
   saveJoin (information) {
+    console.log('info', information)
+    axios.post('/joinEvent', information)
+    .then(res => {
+      if (res.data.success) {
+        axios.get('/events')
+          .then(newEvent => this.setState({b: newEvent.data}, () => {
+            newEvent.data.forEach(elem => {
+              elem.start = new Date(elem['start'])
+              elem.end = new Date(elem['end'])
+            })
+            this.setState({eventList: newEvent.data})
+          }))
+      }
+    })
     this.setState({ showJoinModal: false })
   }
 
@@ -174,32 +189,53 @@ class Calendar extends React.Component {
 
   handleOriginFilterSelect (origin) {
     if (origin === 'All') {
-      this.state.originFilterButton = 'From'
+      this.setState({
+        originFilterButton: 'From',
+        origins: ORIGINS
+      })
     } else {
-      this.state.originFilterButton = 'From ' + origin
+      const filteredDestinations = DESTINATIONS.filter(destination => {
+        return destination !== origin
+      })
+      this.setState({
+        originFilterButton: 'From ' + origin,
+        destinations: filteredDestinations
+      })
     }
-    this.state.originFilter = origin
-    this.applyFilters()
+    this.setState({originFilter: origin}, () => {
+      this.applyFilters()
+    })
   }
 
   handleDestinationFilterSelect (destination) {
     if (destination === 'All') {
-      this.state.destinationFilterButton = 'To'
+      this.setState({
+        destinationFilterButton: 'To',
+        destinations: DESTINATIONS
+      })
     } else {
-      this.state.destinationFilterButton = 'To ' + destination
+      const filteredOrigins = ORIGINS.filter(origin => {
+        return origin !== destination
+      })
+      this.setState({
+        destinationFilterButton: 'To ' + destination,
+        origins: filteredOrigins
+      })
     }
-    this.state.destinationFilter = destination
-    this.applyFilters()
+    this.setState({destinationFilter: destination}, () => {
+      this.applyFilters()
+    })
   }
 
   handleFreeSeatsSelect (freeSeats) {
     if (freeSeats === 'All') {
-      this.state.freeSeatsFilterButton = 'Seats Free'
+      this.setState({freeSeatsFilterButton: 'Seats Free'})
     } else {
-      this.state.freeSeatsFilterButton = 'Seats Free: ' + freeSeats
+      this.setState({freeSeatsFilterButton: 'Seats Free: ' + freeSeats})
     }
-    this.state.freeSeatsFilter = freeSeats
-    this.applyFilters()
+    this.setState({freeSeatsFilter: freeSeats}, () => {
+      this.applyFilters()
+    })
   }
 
   applyFilters () {
@@ -221,13 +257,13 @@ class Calendar extends React.Component {
       <ButtonToolbar style={{display: 'flex', justifyContent: 'center'}}>
         <DropdownButton title={this.state.originFilterButton} key='1' id='from-filter' onSelect={(e) => this.handleOriginFilterSelect(e)}>
           <MenuItem eventKey='All' key='0'>All</MenuItem>
-          {ORIGINS.map((origin, index) => {
+          {this.state.origins.map((origin, index) => {
             return (<MenuItem eventKey={origin} key={index}>{origin}</MenuItem>)
           })}
         </DropdownButton>
         <DropdownButton title={this.state.destinationFilterButton} key='2' id='to-filter' onSelect={(e) => this.handleDestinationFilterSelect(e)}>
           <MenuItem eventKey='All' key='0'>All</MenuItem>
-          {DESTINATIONS.map((destination, index) => {
+          {this.state.destinations.map((destination, index) => {
             return (<MenuItem eventKey={destination} key={index}>{destination}</MenuItem>)
           })}
         </DropdownButton>
@@ -242,6 +278,7 @@ class Calendar extends React.Component {
   }
 
   render () {
+    var today = new Date()
     return (
       <div>
         <div>
@@ -253,6 +290,7 @@ class Calendar extends React.Component {
           views={['week', 'day']}
           step={60}
           defaultDate={new Date(2015, 3, 1)}
+          min={new Date(today.getFullYear(), today.getMonth(), today.getDate(), 6)}
           defaultView='week'
           selectable
           onSelectEvent={(e) => this.handleOnSelectEvent(e)}

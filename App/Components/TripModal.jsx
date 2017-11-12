@@ -22,9 +22,7 @@ class TripModal extends React.Component {
       desc: '',
       availableNumbers: AVAILABLE_NUMBERS,
       origins: ORIGINS,
-      allOrigins: ORIGINS,
-      destinations: DESTINATIONS,
-      allDestinations: DESTINATIONS
+      destinations: DESTINATIONS
     }
   }
 
@@ -33,10 +31,17 @@ class TripModal extends React.Component {
   }
 
   handleOriginChange (origin) {
-    this.setState({origin})
+    const filteredDestinations = DESTINATIONS.filter(destination => {
+      return destination !== origin
+    })
+    this.setState({origin, destinations: filteredDestinations})
   }
 
   handleDestinationChange (destination) {
+    const filteredOrigins = ORIGINS.filter(origin => {
+      return origin !== destination
+    })
+    this.setState({origins: filteredOrigins})
     this.setState({destination})
   }
 
@@ -135,6 +140,57 @@ class TripModal extends React.Component {
             </div>
           </div>
           <form>
+            <FormGroup controlId='totalSeats'>
+              <ControlLabel>Total Seats Free: </ControlLabel>
+              <DropdownButton
+                title={this.state.numSeats}
+                id='totalSeats-dropdown'
+                onSelect={(num) => this.handleNumSeatsChange(num)}
+                noCaret
+              >
+                {this.state.availableNumbers.map((num, index) => {
+                  return (
+                    <MenuItem eventKey={num} key={index}>
+                      {num}
+                    </MenuItem>)
+                })}
+              </DropdownButton>
+            </FormGroup>
+
+            <FormGroup controlId='origin'>
+              <ControlLabel>Leaving From: </ControlLabel>
+              <DropdownButton
+                title={this.state.origin}
+                id='origin-dropdown'
+                onSelect={(origin) => this.handleOriginChange(origin)}
+                noCaret
+              >
+                {this.state.origins.map((location, index) => {
+                  return (
+                    <MenuItem key={index} eventKey={location}>
+                      {location}
+                    </MenuItem>)
+                })}
+              </DropdownButton>
+            </FormGroup>
+
+            <FormGroup controlId='destination'>
+              <ControlLabel>Destination: </ControlLabel>
+              <DropdownButton
+                title={this.state.destination}
+                id='destination-dropdown'
+                onSelect={(destination) => this.handleDestinationChange(destination)}
+                noCaret
+              >
+                {this.state.destinations.map((location, index) => {
+                  return (
+                    <MenuItem key={index} eventKey={location}>
+                      {location}
+                    </MenuItem>)
+                })}
+              </DropdownButton>
+            </FormGroup>
+
             <FormGroup controlId='description'>
               <ControlLabel>Description</ControlLabel>
               <FormControl

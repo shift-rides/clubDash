@@ -14,6 +14,7 @@ class JoinModal extends React.Component {
     this.state = {
       currEvent: props.currEvent
     }
+    console.log('props', props)
   }
 
   cancelJoin () {
@@ -21,7 +22,10 @@ class JoinModal extends React.Component {
   }
 
   saveJoin () {
-    this.props.saveJoin()
+    this.props.saveJoin({
+      eventID: this.state.currEvent._id,
+      userID: this.props.profile._id
+    })
   }
 
   render () {
