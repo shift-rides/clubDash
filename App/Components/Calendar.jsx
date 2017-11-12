@@ -7,19 +7,30 @@ import myEventsList from '../../Library/events'
 import {Modal} from 'react-bootstrap'
 import TripModal from './TripModal'
 import JoinModal from './JoinModal'
-// import axios from 'axios'
+import axios from 'axios'
 
 BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
 class Calendar extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
+      profile: null,
       timeslotStart: '',
       timeslotEnd: '',
       currEvent: '',
       showTripModal: false,
       showJoinModal: false
     }
+  }
+
+  componentWillMount () {
+    axios.get('/userInfo')
+      .then(profile => this.setState({ profile: profile.data }, () => {
+        console.log('profile', profile)
+        if (this.state.profile.waivers.length < 1 && !this.state.showModal) {
+          this.openModal()
+        }
+      }))
   }
 
   handleOnSelectEvent (e) {

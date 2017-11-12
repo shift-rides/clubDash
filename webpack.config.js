@@ -2,10 +2,10 @@ module.exports = {
   entry: './App/app.jsx',
   output: {
     path: `${__dirname}/build`,
-    filename: 'app.bundle.js',
+    filename: 'app.bundle.js'
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx']
   },
   module: {
     rules: [
@@ -15,14 +15,14 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['es2015', 'react'],
-          },
-        },
-      },
-    ],
+            presets: ['es2015', 'react']
+          }
+        }
+      }
+    ]
   },
   stats: {
-    colors: true,
+    colors: true
   },
-  devtool: 'source-map',
-};
+  devtool: 'source-map'
+}

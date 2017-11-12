@@ -15,23 +15,15 @@ class JoinModal extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      numSeats: '',
-      startVal: '',
-      endVal: '',
-      descriptionVal: '',
-      originVal: '',
-      destinationVal: '',
-      availableNumbers: ['1', '2', '3', '4', '5', '6', '7', '8'],
-      origins: ['Brandeis', 'Logan Airport', 'New Jersey', 'New York'],
-      destinations: ['Brandeis', 'Logan Airport', 'New Jersey', 'New York']
+      origin: '',
+      destination: '',
+      start: '',
+      end: '',
+      freeSeats: '',
+      organizer: '',
+      riders: '',
+      description: ''
     }
-  }
-
-  handleNumSeatsChange (num) {
-    this.setState({numSeats: num})
-  }
-  handleDescriptionChange (e) {
-    this.setState({descriptionVal: e.target.value})
   }
 
   cancelJoin () {
@@ -45,12 +37,12 @@ class JoinModal extends React.Component {
     return (
       <div>
         <Modal.Header>
-          <Modal.Title>Organize Trip</Modal.Title>
+          <Modal.Title>Join Trip</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form>
             <FormGroup controlId='totalSeats'>
-              <ControlLabel>Total Seats Free</ControlLabel>
+              <ControlLabel>Total Seats Free: </ControlLabel>
               <DropdownButton
                 title={this.state.numSeats}
                 id='totalSeats-dropdown'

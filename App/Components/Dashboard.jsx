@@ -34,7 +34,6 @@ class Dashboard extends React.Component {
   componentWillMount () {
     axios.get('/userInfo')
       .then(profile => this.setState({ profile: profile.data }, () => {
-        console.log('profile', profile)
         if (this.state.profile.waivers.length < 1 && !this.state.showModal) {
           this.openModal()
         }

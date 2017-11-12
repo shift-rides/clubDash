@@ -36,7 +36,6 @@ const routeHelper = (app) => {
 
   app.get('/userInfo', (req, res) => {
     res.json(req.user);
-    console.log("here1")
   });
 
   app.post('/clubs', (req, res) => {
