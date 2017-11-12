@@ -1,28 +1,28 @@
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const passport = require('passport')
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 
-const { User } = require('../models/models');
+const { User } = require('../models/models')
 
 const passportHelper = (app) => {
   passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'http://localhost:3000/auth/google/callback',
+    callbackURL: 'http://localhost:3000/auth/google/callback'
   },
     ((accessToken, refreshToken, profile, done) => {
       // console.log("email value",profile.emails[0].value);
       User.findOne({ googleId: profile.id }, (err, user) => {
-        if(profile.emails[0].value.indexOf('brandeis.edu') === -1){
-          done(err, null);
+        if (profile.emails[0].value.indexOf('brandeis.edu') === -1) {
+          done(err, null)
         }
         if (err) {
-          done(err, null);
+          done(err, null)
         } else if (user) {
           if (profile.photos[0].value !== user.imageUrl) {
-            user.imageUrl = profile.photos[0].value;
-            user.save(() => done(null, user));
+            user.imageUrl = profile.photos[0].value
+            user.save(() => done(null, user))
           } else {
-            done(null, user);
+            done(null, user)
           }
         } else {
           const newUser = new User({
@@ -32,32 +32,32 @@ const passportHelper = (app) => {
             email: profile.emails[0].value,
             waivers: [],
             admin: false,
-            clubsLeading: [],
-          });
+            clubsLeading: []
+          })
           newUser.save((saveErr) => {
             if (saveErr) {
-              done(saveErr, null);
+              done(saveErr, null)
             } else {
-              done(null, newUser);
+              done(null, newUser)
             }
-          });
+          })
         }
-      });
-    }),
-  ));
+      })
+    })
+  ))
 
   passport.serializeUser((user, done) => {
-    done(null, user.id);
-  });
+    done(null, user.id)
+  })
 
   passport.deserializeUser((id, done) => {
     User.findById(id, (err, user) => {
-      done(err, user);
-    });
-  });
+      done(err, user)
+    })
+  })
 
-  app.use(passport.initialize());
-  app.use(passport.session());
-};
+  app.use(passport.initialize())
+  app.use(passport.session())
+}
 
-module.exports = passportHelper;
+module.exports = passportHelper

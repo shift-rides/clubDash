@@ -74,15 +74,11 @@ class Calendar extends React.Component {
           organizerName = profile.data.name
           e.organizerName = organizerName
           this.setState({currEvent: e}, () => {
-            console.log('e.riders', e.riders)
-            console.log('prof', this.state.profile._id)
             var showRider = false
             if (this.state.profile.name === organizerName) {
               this.setState({showEditModal: true})
             } else {
               e.riders.forEach(rider => {
-                console.log('rider', rider)
-                console.log('profile', this.state.profile._id)
                 if (rider._id === this.state.profile._id) {
                   showRider = true
                 }
