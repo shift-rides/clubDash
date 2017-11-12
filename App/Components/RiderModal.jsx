@@ -1,5 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {AVAILABLE_NUMBERS} from '../../Library/const'
+
 import {
   Modal,
   Button,
@@ -8,27 +10,29 @@ import {
   ListGroupItem
 } from 'react-bootstrap'
 
-class JoinModal extends React.Component {
+class RiderModal extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      currEvent: props.currEvent
+      currEvent: props.currEvent,
+      numSeats: String(props.currEvent.freeSeats),
+      availableNumbers: AVAILABLE_NUMBERS
     }
   }
 
-  cancelJoin () {
-    this.props.cancelJoin()
+  leaveTrip () {
+    this.props.leaveTrip()
   }
 
-  saveJoin () {
-    this.props.saveJoin()
+  closeRiderModal () {
+    this.props.closeRiderModal()
   }
 
   render () {
     return (
       <div className='join-modal'>
         <Modal.Header>
-          <Modal.Title>Join Trip</Modal.Title>
+          <Modal.Title>{this.state.currEvent.organizer}'s Trip</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Modal.Title>Organizer: {this.state.currEvent.organizer}</Modal.Title>
@@ -41,13 +45,16 @@ class JoinModal extends React.Component {
           <Modal.Title>Other Riders:</Modal.Title>
           <ListGroup>
             {this.state.currEvent.riders.map((rider, index) => {
-              return <ListGroupItem key={index}>{rider}</ListGroupItem>
+              if (rider === this.props.profile.name) {
+                return <ListGroupItem key={index}>{rider}<Button onClick={this.leaveTrip.bind(this)}>Click to Leave Trip</Button></ListGroupItem>
+              } else {
+                return <ListGroupItem key={index}>{rider}</ListGroupItem>
+              }
             })}
           </ListGroup>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={this.cancelJoin.bind(this)}>Cancel</Button>
-          <Button onClick={this.saveJoin.bind(this)}>Join</Button>
+          <Button onClick={this.closeRiderModal.bind(this)}>Done</Button>
           <HelpBlock />
         </Modal.Footer>
       </div>
@@ -55,13 +62,13 @@ class JoinModal extends React.Component {
   }
 }
 
-JoinModal.propTypes = {
-  cancelJoin: PropTypes.func.isRequired,
-  saveJoin: PropTypes.func.isRequired,
+RiderModal.propTypes = {
+  leaveTrip: PropTypes.func.isRequired,
+  closeRiderModal: PropTypes.func.isRequired,
   profile: PropTypes.shape({
     name: PropTypes.string,
     email: PropTypes.string
   })
 }
 
-export default JoinModal
+export default RiderModal

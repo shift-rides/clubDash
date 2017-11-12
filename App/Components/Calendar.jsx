@@ -1,28 +1,36 @@
-/* globals alert */
-
 import React from 'react'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 import myEventsList from '../../Library/events'
-import {Modal} from 'react-bootstrap'
+import {Modal, MenuItem, ButtonToolbar, DropdownButton} from 'react-bootstrap'
 import TripModal from './TripModal'
 import JoinModal from './JoinModal'
+import EditModal from './EditModal'
+import RiderModal from './RiderModal'
 import axios from 'axios'
+import {AVAILABLE_NUMBERS, ORIGINS, DESTINATIONS} from '../../Library/const'
 
 BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
+
 class Calendar extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       profile: null,
+      allEvents: myEventsList,
       eventList: myEventsList,
       timeslotStart: '',
       timeslotEnd: '',
       currEvent: {},
       showTripModal: false,
       showJoinModal: false,
-      timeslotStartMoongose:null,
-      timeslotEndMoongose:null
+      showRiderModal: false,
+      originFilter: 'All',
+      destinationFilter: 'All',
+      freeSeatsFilter: 'All',
+      originFilterButton: 'From',
+      destinationFilterButton: 'To',
+      freeSeatsFilterButton: 'Seats Free'
     }
   }
 
@@ -30,122 +38,183 @@ class Calendar extends React.Component {
     axios.get('/userInfo')
       .then(profile => this.setState({ profile: profile.data }, () => {
     //    console.log('profile', profile)
-  }));
+      }))
 
-  axios.get('/events')
-    .then(newEvent => this.setState({b: newEvent.data}, () => {
-      newEvent.data.forEach(function(elem) {
-      console.log("element is ", elem);
-      elem.start = new Date(elem['start']);
-      elem.end = new Date(elem['end']);
-      console.log('elem is ', elem);
-      });
-    this.setState({eventList: newEvent.data});
-    }));
+    axios.get('/events')
+      .then(newEvent => this.setState({b: newEvent.data}, () => {
+        newEvent.data.forEach(function (elem) {
+          elem.start = new Date(elem['start'])
+          elem.end = new Date(elem['end'])
+        })
+        this.setState({eventList: newEvent.data})
+        this.setState({allEvents: newEvent.data})
+      }))
   }
-
 
   handleOnSelectEvent (e) {
-
-var organizerName;
-    axios.get('/userInfo/'+e.organizer)
+    var organizerName
+    axios.get('/userInfo/' + e.organizer)
       .then(profile => {
-        // this.setState({ profile: profile.data
-        // })
-        organizerName = profile.data.name;
-        //console.log(organizerName);
-        this.setState({currEvent: {
-          title: e.title,
-          allDay: e.allDay,
-          start: e.start,
-          end: e.end,
-          origin: e.origin,
-          destination: e.destination,
-          freeSeats: e.freeSeats,
-          organizer: organizerName,
-          riders: e.riders,
-          desc: e.desc
-        }})
-        this.setState({showJoinModal: true})
-      });
-
-
+        organizerName = profile.data.name
+        e.organizerName = organizerName
+        this.setState({currEvent: e})
+        if (this.state.profile.name === organizerName) {
+          this.setState({showEditModal: true})
+        } else if (e.riders.indexOf(this.state.profile.name) !== -1) {
+          this.setState({showRiderModal: true})
+        } else {
+          this.setState({showJoinModal: true})
+        }
+      })
   }
 
-  handleOnSelectSlot (slotInfo) {
-    // alert(
-    //   `selected slot: \n\nstart ${slotInfo.start.toLocaleString()} ` +
-    //   `\nend: ${slotInfo.end.toLocaleString()}` +
-    //   `\naction: ${slotInfo.action}`
-    // )
+  handleOnSelectSlot (e) {
+    this.setState({currEvent: e})
     this.setState({
-      timeslotStart: slotInfo.start.toLocaleString(),
-      timeslotEnd: slotInfo.end.toLocaleString(),
-      timeslotStartMoongose:slotInfo.start,
-      timeslotEndMoongose:slotInfo.end,
+      timeslotStart: e.start.toLocaleString(),
+      timeslotEnd: e.end.toLocaleString(),
+      timeslotStartMoongose: e.start,
+      timeslotEndMoongose: e.end,
       showTripModal: true})
   }
 
   cancelTrip (information) {
-    // axios.post('/saveEvent', information)
-    //   .then((res) => {
-    //     if (res.data.success) { // TODO: Make sure the waiver was finsihed
-    //       this.setState({ showModal: false })
-    //     }
-    //   })
-    console.log('this', this)
     this.setState({ showTripModal: false })
   }
-  //save a new trip
+
   saveTrip (information) {
-    const newInfo= Object.assign(information,
-      { profile: this.state.profile,
+    const newInfo = Object.assign(information,
+      {
+        profile: this.state.profile,
         timeslotStart: this.state.timeslotStart,
-        timeslotEnd: this.state.timeslotEnd,
-      });
-    console.log("new checking info",newInfo);;
-    axios.post('/saveEvent', information)
+        timeslotEnd: this.state.timeslotEnd
+      })
+
+    axios.post('/saveEvent', newInfo)
       .then((res) => {
         if (res.data.success) { // TODO: Make sure that the state of the
           this.setState({ showModal: false })
           axios.get('/events')
             .then(newEvent => this.setState({b: newEvent.data}, () => {
-              newEvent.data.forEach(function(elem) {
-        console.log("element is ", elem);
-        elem.start = new Date(elem['start']);
-        elem.end = new Date(elem['end']);
-        console.log('elem is ', elem);
-        });
-        this.setState({eventList: newEvent.data});
-         }));
+              newEvent.data.forEach(elem => {
+                elem.start = new Date(elem['start'])
+                elem.end = new Date(elem['end'])
+              })
+              this.setState({eventList: newEvent.data})
+            }))
         }
       })
     this.setState({ showTripModal: false })
   }
-  // cancel a join modal
+
   cancelJoin (information) {
-    // axios.post('/saveEvent', information)
-    //   .then((res) => {
-    //     if (res.data.success) { // TODO: Make sure the waiver was finsihed
-    //       this.setState({ showModal: false })
-    //     }
-    //   })
     this.setState({ showJoinModal: false })
   }
 
   saveJoin (information) {
-    // axios.post('/saveEvent', information)
-    //   .then((res) => {
-    //     if (res.data.success) { // TODO: Make sure the waiver was finsihed
-    //       this.setState({ showModal: false })
-    //     }
-    //   })
     this.setState({ showJoinModal: false })
+  }
+
+  deleteTrip (information) {
+    console.log('trip deleted')
+    this.setState({ showEditModal: false })
+  }
+
+  cancelEdit () {
+    console.log('edit canceled')
+    this.setState({ showEditModal: false })
+  }
+
+  saveEdit (information) {
+    this.setState({ showEditModal: false })
+    console.log('edit saved')
+  }
+
+  leaveTrip (information) {
+    this.setState({ showRiderModal: false })
+    console.log('rider has left trip')
+  }
+
+  closeRiderModal (information) {
+    this.setState({ showRiderModal: false })
+    console.log('rider modal closed')
+  }
+
+  handleOriginFilterSelect (origin) {
+    if (origin === 'All') {
+      this.state.originFilterButton = 'From'
+    } else {
+      this.state.originFilterButton = 'From ' + origin
+    }
+    this.state.originFilter = origin
+    this.applyFilters()
+  }
+
+  handleDestinationFilterSelect (destination) {
+    if (destination === 'All') {
+      this.state.destinationFilterButton = 'To'
+    } else {
+      this.state.destinationFilterButton = 'To ' + destination
+    }
+    this.state.destinationFilter = destination
+    this.applyFilters()
+  }
+
+  handleFreeSeatsSelect (freeSeats) {
+    if (freeSeats === 'All') {
+      this.state.freeSeatsFilterButton = 'Seats Free'
+    } else {
+      this.state.freeSeatsFilterButton = 'Seats Free: ' + freeSeats
+    }
+    this.state.freeSeatsFilter = freeSeats
+    this.applyFilters()
+  }
+
+  applyFilters () {
+    let eventList = this.state.allEvents
+    eventList = eventList.filter(event => {
+      return this.state.originFilter === 'All' || event.origin === this.state.originFilter
+    })
+    eventList = eventList.filter(event => {
+      return this.state.destinationFilter === 'All' || event.destination === this.state.destinationFilter
+    })
+    eventList = eventList.filter(event => {
+      return this.state.freeSeatsFilter === 'All' || event.freeSeats <= parseInt(this.state.freeSeatsFilter)
+    })
+    this.setState({eventList})
+  }
+
+  renderFilterButtons () {
+    return (
+      <ButtonToolbar style={{display: 'flex', justifyContent: 'center'}}>
+        <DropdownButton title={this.state.originFilterButton} key='1' id='from-filter' onSelect={(e) => this.handleOriginFilterSelect(e)}>
+          <MenuItem eventKey='All' key='0'>All</MenuItem>
+          {ORIGINS.map((origin, index) => {
+            return (<MenuItem eventKey={origin} key={index}>{origin}</MenuItem>)
+          })}
+        </DropdownButton>
+        <DropdownButton title={this.state.destinationFilterButton} key='2' id='to-filter' onSelect={(e) => this.handleDestinationFilterSelect(e)}>
+          <MenuItem eventKey='All' key='0'>All</MenuItem>
+          {DESTINATIONS.map((destination, index) => {
+            return (<MenuItem eventKey={destination} key={index}>{destination}</MenuItem>)
+          })}
+        </DropdownButton>
+        <DropdownButton title={this.state.freeSeatsFilterButton} key='3' id='seats-filter' onSelect={(e) => this.handleFreeSeatsSelect(e)}>
+          <MenuItem eventKey='All' key='0'>All</MenuItem>
+          {AVAILABLE_NUMBERS.map((num, index) => {
+            return (<MenuItem eventKey={num} key={index}>{num}</MenuItem>)
+          })}
+        </DropdownButton>
+      </ButtonToolbar>
+    )
   }
 
   render () {
     return (
       <div>
+        <div>
+          {this.renderFilterButtons()}
+        </div>
         <BigCalendar
           {...this.props}
           events={this.state.eventList}
@@ -172,6 +241,23 @@ var organizerName;
             cancelJoin={this.cancelJoin.bind(this)}
             saveJoin={this.saveJoin.bind(this)}
             currEvent={this.state.currEvent}
+          />
+        </Modal>
+        <Modal show={this.state.showEditModal}>
+          <EditModal
+            profile={this.state.profile}
+            currEvent={this.state.currEvent}
+            deleteTrip={this.deleteTrip.bind(this)}
+            cancelEdit={this.cancelEdit.bind(this)}
+            saveEdit={this.saveEdit.bind(this)}
+          />
+        </Modal>
+        <Modal show={this.state.showRiderModal}>
+          <RiderModal
+            profile={this.state.profile}
+            currEvent={this.state.currEvent}
+            leaveTrip={this.leaveTrip.bind(this)}
+            closeRiderModal={this.closeRiderModal.bind(this)}
           />
         </Modal>
       </div>
