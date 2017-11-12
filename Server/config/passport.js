@@ -1,7 +1,7 @@
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const passport = require('passport')
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 
-const { User } = require('../models/models');
+const { User } = require('../models/models')
 
 const passportHelper = (app) => {
   passport.use(new GoogleStrategy({
@@ -47,17 +47,17 @@ const passportHelper = (app) => {
   ))
 
   passport.serializeUser((user, done) => {
-    done(null, user.id);
-  });
+    done(null, user.id)
+  })
 
   passport.deserializeUser((id, done) => {
     User.findById(id, (err, user) => {
-      done(err, user);
-    });
-  });
+      done(err, user)
+    })
+  })
 
-  app.use(passport.initialize());
-  app.use(passport.session());
-};
+  app.use(passport.initialize())
+  app.use(passport.session())
+}
 
-module.exports = passportHelper;
+module.exports = passportHelper
