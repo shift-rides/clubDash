@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 import {
   Switch,
-  Route,
-} from 'react-router-dom';
+  Route
+} from 'react-router-dom'
 import {
   Navbar,
   Jumbotron,
@@ -11,53 +11,57 @@ import {
   NavDropdown,
   NavItem,
   MenuItem,
-  Glyphicon,
-} from 'react-bootstrap';
-import axios from 'axios';
+  Glyphicon
+} from 'react-bootstrap'
 
-import Profile from './Profile';
-import ClubProfile from './ClubProfile';
-import Clubs from './Clubs';
-import MainWaiver from './MainWaiver';
+import axios from 'axios'
+import Profile from './Profile'
+import ClubProfile from './ClubProfile'
+import Clubs from './Clubs'
+import MainWaiver from './MainWaiver'
+import Calendar from './Calendar'
 
 class Dashboard extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       profile: null,
-      showModal: false,
-    };
-    this.closeModal = this.closeModal.bind(this);
-    this.openModal = this.openModal.bind(this);
+      showModal: false
+    }
+    this.closeModal = this.closeModal.bind(this)
+    this.openModal = this.openModal.bind(this)
   }
-  componentWillMount() {
+  componentWillMount () {
     axios.get('/userInfo')
       .then(profile => this.setState({ profile: profile.data }, () => {
+        console.log('profile', profile)
         if (this.state.profile.waivers.length < 1 && !this.state.showModal) {
-          this.openModal();
+          this.openModal()
         }
-      }));
+      }))
   }
 
-  openModal() {
-    this.setState({ showModal: true });
+  openModal () {
+    this.setState({ showModal: true })
   }
-  closeModal(information) {
+
+  closeModal (information) {
     axios.post('/mainWaiver', information)
       .then((res) => {
         if (res.data.success) { // TODO: Make sure the waiver was finsihed
-          this.setState({ showModal: false });
+          this.setState({ showModal: false })
         }
-      });
+      })
   }
-  render() {
+
+  render () {
     return (
       <div>
         <Navbar>
           <Nav>
-            <NavDropdown id="basic-nav-dropdown" title={<Glyphicon glyph="menu-hamburger" />}>
-              <MenuItem href="#/">Home</MenuItem>
-              <MenuItem href="#/clubs">Clubs</MenuItem>
+            <NavDropdown id='basic-nav-dropdown' title={<Glyphicon glyph='menu-hamburger' />}>
+              <MenuItem href='#/'>Home</MenuItem>
+              <MenuItem href='#/clubs'>Clubs</MenuItem>
             </NavDropdown>
           </Nav>
           <Navbar.Header>
@@ -66,21 +70,25 @@ class Dashboard extends React.Component {
             </Navbar.Brand>
           </Navbar.Header>
           <Nav pullRight>
-            <NavItem onClick={() => { axios.post('/logout'); }} href="/login">Logout</NavItem>
+            <NavItem onClick={() => { axios.post('/logout') }} href='/login'>Logout</NavItem>
           </Nav>
         </Navbar>
         <Jumbotron>
           <Switch>
             <Route
-              path="/clubs/:clubId"
+              path='/clubs/:clubId'
               component={ClubProfile}
             />
             <Route
-              path="/clubs"
+              path='/clubs'
               component={Clubs}
             />
             <Route
-              path="/"
+              path='/'
+              component={Calendar}
+            />
+            <Route
+              path='/profile'
               component={Profile}
             />
           </Switch>
@@ -89,8 +97,8 @@ class Dashboard extends React.Component {
           <MainWaiver profile={this.state.profile} closeModal={this.closeModal} />
         </Modal>
       </div>
-    );
+    )
   }
 }
 
-export default Dashboard;
+export default Dashboard

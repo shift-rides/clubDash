@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 import {
   Modal,
   Button,
@@ -7,42 +7,42 @@ import {
   FormControl,
   FormGroup,
   ControlLabel,
-  HelpBlock,
-} from 'react-bootstrap';
+  HelpBlock
+} from 'react-bootstrap'
 
 class ClubWaiver extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       imageUrl: '',
-      name: '',
-    };
-    this.handleImageChange = this.handleImageChange.bind(this);
+      name: ''
+    }
+    this.handleImageChange = this.handleImageChange.bind(this)
   }
-  handleImageChange(e) {
-    this.setState({ image: e.target.value });
+  handleImageChange (e) {
+    this.setState({ image: e.target.value })
   }
 
-  render() {
+  render () {
     return (
       <div>
         <Modal.Header><Modal.Title>New Club</Modal.Title></Modal.Header>
         <Modal.Body>
-          <FormGroup controlId="name">
+          <FormGroup controlId='name'>
             <ControlLabel>Club Name</ControlLabel>
             <FormControl
-              type="text"
+              type='text'
               value={this.state.name}
-              placeholder="Enter Club Name"
+              placeholder='Enter Club Name'
               onChange={e => this.setState({ name: e.target.value })}
             />
           </FormGroup>
-          <FormGroup controlId="image">
+          <FormGroup controlId='image'>
             <ControlLabel>Image Url</ControlLabel>
             <FormControl
-              type="text"
+              type='text'
               value={this.state.image}
-              placeholder="Enter image Url"
+              placeholder='Enter image Url'
               onChange={this.handleImageChange}
             />
           </FormGroup>
@@ -54,13 +54,13 @@ class ClubWaiver extends React.Component {
           <Button onClick={this.props.closeModal}>Cancel</Button>
         </Modal.Footer>
       </div>
-    );
+    )
   }
 }
 
 ClubWaiver.propTypes = {
   createClub: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-};
+  closeModal: PropTypes.func.isRequired
+}
 
-export default ClubWaiver;
+export default ClubWaiver
