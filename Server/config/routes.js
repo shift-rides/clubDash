@@ -39,36 +39,33 @@ const routeHelper = (app) => {
   })
 
   app.get('/userInfoPapulate', (req, res) => {
-    User.findOne({ _id: req.user._id})
+    User.findOne({_id: req.user._id})
     .populate('eventRegistered') // <==
-    .exec(function(err, events){
-      console.log(events);
-         res.json((events));
-    });
+    .exec((err, events) => {
+      if (err) {}
+      res.json((events))
+    })
   })
-
 
   app.get('/userInfo/:userId', (req, res) => {
     User.findById(req.params.userId, (err, profile) => res.json(profile))
   })
 
   app.get('/events', (req, res) => {
-    Event.find().lean().exec(function (err, users) {
-     res.json((users))
+    Event.find().lean().exec((err, users) => {
+      if (err) {}
+      res.json(users)
     })
   })
 
   app.get('/eventInfo/:eventId', (req, res) => {
-    Event.findOne({ _id: req.params.eventId})
+    Event.findOne({_id: req.params.eventId})
     .populate('riders') // <==
-    .exec(function(err, riders){
-      console.log(riders);
-         res.json((riders));
-    });
-  });
-
-
-
+    .exec((err, riders) => {
+      if (err) {}
+      res.json((riders))
+    })
+  })
 
   app.post('/clubs', (req, res) => {
     if (req.user.admin) {
@@ -94,26 +91,22 @@ const routeHelper = (app) => {
     )
   })
 
-
   app.post('/removeUserFromEvent/', (req, res) => {
-Event.update(
-  {_id: req.body.eventId},
-  { $pull: {riders: req.body.riderId } }
-).then( err => {
- User.update({
-   _id: req.body.riderId
- },{ $pull: {eventRegistered: req.body.eventId }}
-).then(err =>   res.json({ success: true })
- )
-});
-});
-
-
+    Event.update(
+      {_id: req.body.eventId},
+      {$pull: {riders: req.body.riderId}})
+      .then(err => {
+        if (err) {}
+        User.update({_id: req.body.riderId}, {$pull: {eventRegistered: req.body.eventId}})
+        .then(err => {
+          if (err) {}
+          res.json({ success: true })
+        })
+      })
+  })
 
 // Saving an Event to DB
   app.post('/saveEvent', (req, res) => {
-    console.log('save event got hit backend', req.body)
-
     const newEvent = new Event({
       allDay: false,
       start: req.body.timeslotStart,
@@ -135,30 +128,24 @@ Event.update(
   })
 
   app.post('/joinEvent', (req, res) => {
-    console.log('req body in join', req.body)
     Event.findOneAndUpdate({_id: req.body.eventID},
       {$push: {'riders': req.body.userID}},
-      {safe: true, upsert: true, new : true},
+      {safe: true, upsert: true, new: true},
     ).then((err) => {
       console.log('hi1')
-      if (false) {
+      if (err) {
         console.log('there is err 1', err)
       } else {
-        console.log('res', res)
-
-        ///
         User.findOneAndUpdate({_id: req.body.userID},
           {$push: {'eventRegistered': req.body.eventID}},
-          {safe: true, upsert: true, new : true},
+          {safe: true, upsert: true, new: true},
         ).then((err) => {
-          console.log('hi1')
-          if (false) {
+          if (err) {
             console.log('there is an error', err)
           } else {
             res.json({success: true})
           }
         })
-        ///
       }
     })
   })
@@ -168,6 +155,7 @@ Event.update(
       res.json({ success: false })
     } else {
       User.findById(req.user.id, (err, user) => {
+        if (err) {}
         if (req.body.name !== req.user.name) {
           user.name = req.body.name
         }

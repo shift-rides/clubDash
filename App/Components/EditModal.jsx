@@ -24,9 +24,9 @@ class EditModal extends React.Component {
     }
   }
 
-  removeRider (e,b,c) {
-    const info = {riderId: e, eventId: this.state.currEvent._id }
-    this.props.removeRider(info);
+  removeRider (e, b, c) {
+    const info = {riderId: e, eventId: this.state.currEvent._id}
+    this.props.removeRider(info)
   }
 
   handleNumSeatsChange (numSeats) {

@@ -41,8 +41,7 @@ class TripModal extends React.Component {
     const filteredOrigins = ORIGINS.filter(origin => {
       return origin !== destination
     })
-    this.setState({origins: filteredOrigins})
-    this.setState({destination})
+    this.setState({destination, origins: filteredOrigins})
   }
 
   handleDescriptionChange (e) {
@@ -66,85 +65,85 @@ class TripModal extends React.Component {
   render () {
     return (
       <div className='trip-modal'>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js' />
         <Modal.Header>
-          <div className="trip-jumbotron">
+          <div className='trip-jumbotron'>
             <Modal.Title>ORGANIZE TRIP</Modal.Title>
           </div>
         </Modal.Header>
         <Modal.Body>
-          <div className="row">
-            <div className="trip-times">
+          <div className='row'>
+            <div className='trip-times'>
               <Modal.Title>START: {this.props.timeslotStart}</Modal.Title>
               <Modal.Title>END: {this.props.timeslotEnd}</Modal.Title>
             </div>
           </div>
-          <div className="row">
+          <div className='row'>
             <form>
-              <div className="trip-button">
+              <div className='trip-button'>
                 <FormGroup controlId='totalSeats'>
                   <ControlLabel>TOTAL FREE SEATS</ControlLabel>
-                    <div className="row">
-                      <DropdownButton
-                        title={this.state.numSeats}
-                        id='dropdown'
-                        onSelect={(num) => this.handleNumSeatsChange(num)}
-                        noCaret
-                      >
-                        {this.state.availableNumbers.map((num, index) => {
-                          return (
-                            <MenuItem eventKey={num} key={index}>
-                              {num}
-                            </MenuItem>)
-                        })}
-                      </DropdownButton>
-                    </div>
+                  <div className='row'>
+                    <DropdownButton
+                      title={this.state.numSeats}
+                      id='dropdown'
+                      onSelect={(num) => this.handleNumSeatsChange(num)}
+                      noCaret
+                    >
+                      {this.state.availableNumbers.map((num, index) => {
+                        return (
+                          <MenuItem eventKey={num} key={index}>
+                            {num}
+                          </MenuItem>)
+                      })}
+                    </DropdownButton>
+                  </div>
                 </FormGroup>
               </div>
-              <div className="trip-button">
+              <div className='trip-button'>
                 <FormGroup controlId='origin'>
                   <ControlLabel>LEAVING FROM</ControlLabel>
-                    <div className="row">
-                      <DropdownButton
-                        title={this.state.origin}
-                        id='dropdown'
-                        onSelect={(origin) => this.handleOriginChange(origin)}
-                        noCaret
-                      >
-                        {this.state.origins.map((location, index) => {
-                          return (
-                            <MenuItem key={index} eventKey={location}>
-                              {location}
-                            </MenuItem>)
-                        })}
-                      </DropdownButton>
-                    </div>
+                  <div className='row'>
+                    <DropdownButton
+                      title={this.state.origin}
+                      id='dropdown'
+                      onSelect={(origin) => this.handleOriginChange(origin)}
+                      noCaret
+                    >
+                      {this.state.origins.map((location, index) => {
+                        return (
+                          <MenuItem key={index} eventKey={location}>
+                            {location}
+                          </MenuItem>)
+                      })}
+                    </DropdownButton>
+                  </div>
                 </FormGroup>
               </div>
-              <div className="trip-button">
+              <div className='trip-button'>
                 <FormGroup controlId='destination'>
                   <ControlLabel>DESTINATION</ControlLabel>
-                    <div className="row">
-                      <DropdownButton
-                        title={this.state.destination}
-                        id='dropdown'
-                        onSelect={(destination) => this.handleDestinationChange(destination)}
-                        noCaret
-                      >
-                        {this.state.origins.map((location, index) => {
-                          return (
-                            <MenuItem key={index} eventKey={location}>
-                              {location}
-                            </MenuItem>)
-                        })}
-                      </DropdownButton>
-                    </div>
+                  <div className='row'>
+                    <DropdownButton
+                      title={this.state.destination}
+                      id='dropdown'
+                      onSelect={(destination) => this.handleDestinationChange(destination)}
+                      noCaret
+                    >
+                      {this.state.destinations.map((location, index) => {
+                        return (
+                          <MenuItem key={index} eventKey={location}>
+                            {location}
+                          </MenuItem>)
+                      })}
+                    </DropdownButton>
+                  </div>
                 </FormGroup>
               </div>
             </form>
           </div>
           <form>
-            <div className="trip-button">
+            <div className='trip-button'>
               <FormGroup controlId='description'>
                 <ControlLabel>DESCRIPTION</ControlLabel>
                 <FormControl
@@ -157,7 +156,7 @@ class TripModal extends React.Component {
             </div>
           </form>
         </Modal.Body>
-        <div className="trip-footer">
+        <div className='trip-footer'>
           <Modal.Footer>
             <Button onClick={this.cancelTrip.bind(this)}>Cancel</Button>
             <Button onClick={this.saveTrip.bind(this)}>Save</Button>
