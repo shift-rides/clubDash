@@ -64,7 +64,7 @@ class MainWaiver extends React.Component {
       year: this.state.yearVal,
       email: this.props.profile.email,
       phone: this.state.phoneVal,
-      gender: this.state.gender
+      gender: null
     }
     this.props.closeModal(information)
   }
@@ -73,7 +73,7 @@ class MainWaiver extends React.Component {
     return (
       <div>
         <Modal.Header>
-          <Modal.Title>Join Clubs Waiver</Modal.Title>
+          <Modal.Title>First time profile setup</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form>
@@ -113,7 +113,7 @@ class MainWaiver extends React.Component {
                 onChange={this.handlePhoneChange}
               />
             </FormGroup>
-            <FormGroup>
+            {/* <FormGroup>
               <ControlLabel>Gender</ControlLabel><br />
               <Radio
                 onChange={e => this.setState({ gender: e.target.value })}
@@ -139,19 +139,19 @@ class MainWaiver extends React.Component {
               >
                 {this.state.genderVal || 'Self-Identify'}
               </Radio>
-            </FormGroup>
-            <FormControl
+            </FormGroup> */}
+            {/* <FormControl
               type='text'
               placeholder='Enter other gender'
               value={this.state.genderVal}
               onChange={this.handleGenderChange}
-            />
+            /> */}
           </form>
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={this.submitForm}>Close</Button>
           <HelpBlock>
-            Note: Only your email and name will be saved for future use on the site
+            Note: Please fill your real phone number to make communication easier
           </HelpBlock>
         </Modal.Footer>
       </div>

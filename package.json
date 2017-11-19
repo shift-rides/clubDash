@@ -1,5 +1,5 @@
 {
-    "name": "clubdash",
+    "name": "BrandeisShift",
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
@@ -17,12 +17,12 @@
         "type": "git",
         "url": "git+https://github.com/nstraus/clubDash.git"
     },
-    "author": "nstraus",
+    "author": "BrandeisShift",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/nstraus/clubDash/issues"
+        "url": "https://github.com/shift-rides/shift"
     },
-    "homepage": "https://github.com/nstraus/clubDash#readme",
+    "homepage": "https://github.com/shift-rides/shift",
     "dependencies": {
         "axios": "^0.16.2",
         "babel-core": "^6.25.0",
