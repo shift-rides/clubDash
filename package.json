@@ -4,8 +4,9 @@
     "description": "",
     "main": "index.js",
     "scripts": {
+      "build": "webpack --config webpack.prod.config.js",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "concurrently -k \"npm run webpack\" \"npm run server\"",
+        "start": "npm run build && NODE_ENV=production node ./Server/server.js",
         "webpack": "webpack",
         "server": "node ./Server/server.js",
         "dev": "concurrently -k \"npm run devWebpack\" \"npm run devServer\"",

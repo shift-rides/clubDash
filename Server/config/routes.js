@@ -132,7 +132,6 @@ const routeHelper = (app) => {
       {$push: {'riders': req.body.userID}},
       {safe: true, upsert: true, new: true},
     ).then((err) => {
-      console.log('hi1')
       if (err) {
         console.log('there is err 1', err)
       } else {
