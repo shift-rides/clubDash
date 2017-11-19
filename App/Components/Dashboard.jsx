@@ -33,11 +33,11 @@ class Dashboard extends React.Component {
   }
   componentWillMount () {
     axios.get('/userInfo')
-      .then(profile => this.setState({ profile: profile.data }, () => {
-        if (this.state.profile.waivers.length < 1 && !this.state.showModal) {
-          this.openModal()
-        }
-      }))
+    .then(profile => this.setState({ profile: profile.data }, () => {
+      if (this.state.profile.waivers.length < 1 && !this.state.showModal) {
+        this.openModal()
+      }
+    }))
   }
 
   openModal () {
@@ -46,11 +46,11 @@ class Dashboard extends React.Component {
 
   closeModal (information) {
     axios.post('/mainWaiver', information)
-      .then((res) => {
-        if (res.data.success) { // TODO: Make sure the waiver was finsihed
-          this.setState({ showModal: false })
-        }
-      })
+    .then((res) => {
+      if (res.data.success) { // TODO: Make sure the waiver was finsihed
+        this.setState({ showModal: false })
+      }
+    })
   }
 
   render () {
@@ -63,10 +63,8 @@ class Dashboard extends React.Component {
               <MenuItem href='#/profile'>PROFILE</MenuItem>
             </NavDropdown>
             <Navbar.Header>
-              <Navbar.Brand>
-                <div className='navbar-brand'>
-                  <img src="./shift_logo.png" />
-                </div>
+              <Navbar.Brand className='navbar-brand'>
+                <img src='./shift_logo.png' />
               </Navbar.Brand>
             </Navbar.Header>
           </Nav>

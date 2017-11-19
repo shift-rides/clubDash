@@ -38,60 +38,45 @@ class Calendar extends React.Component {
 
   componentWillMount () {
     axios.get('/userInfo')
-      .then(profile => this.setState({ profile: profile.data }, () => {
-    //    console.log('profile', profile)
-      }))
+    .then(profile => this.setState({ profile: profile.data }, () => {}))
 
     axios.get('/events')
-      .then(newEvent => this.setState({b: newEvent.data}, () => {
-        newEvent.data.forEach(function (elem) {
-          elem.start = new Date(elem['start'])
-          elem.end = new Date(elem['end'])
-        })
-        this.setState({eventList: newEvent.data})
-        this.setState({allEvents: newEvent.data})
-      }))
+    .then(newEvent => this.setState({b: newEvent.data}, () => {
+      newEvent.data.forEach(function (elem) {
+        elem.start = new Date(elem['start'])
+        elem.end = new Date(elem['end'])
+      })
+      this.setState({eventList: newEvent.data})
+      this.setState({allEvents: newEvent.data})
+    }))
   }
 
   handleOnSelectEvent (e) {
-    console.log(e);
-    var organizerName;
-    var ridersName;
+    var organizerName
     axios.get('/userInfo/' + e.organizer)
-      .then(profile => {
-        axios.get('/eventInfo/' + e._id).then(result => {
-
-          // let newInfo = [];
-          console.log('riders name', result.data.riders);
-          e.riders = result.data.riders;
-          // result.data.riders.forEach(name => {
-          // newInfo= [...newInfo, Object.assign(name,
-          //   {
-          //     riderName: name.name,
-          //   })]
-          // })
-          // console.log('new info', newInfo);
-          organizerName = profile.data.name
-          e.organizerName = organizerName
-          this.setState({currEvent: e}, () => {
-            var showRider = false
-            if (this.state.profile.name === organizerName) {
-              this.setState({showEditModal: true})
-            } else {
-              e.riders.forEach(rider => {
-                if (rider._id === this.state.profile._id) {
-                  showRider = true
-                }
-              })
-              if (showRider) {
-                this.setState({showRiderModal: true})
-              } else {
-                this.setState({showJoinModal: true})
+    .then(profile => {
+      axios.get('/eventInfo/' + e._id).then(result => {
+        e.riders = result.data.riders
+        organizerName = profile.data.name
+        e.organizerName = organizerName
+        this.setState({currEvent: e}, () => {
+          var showRider = false
+          if (this.state.profile.name === organizerName) {
+            this.setState({showEditModal: true})
+          } else {
+            e.riders.forEach(rider => {
+              if (rider._id === this.state.profile._id) {
+                showRider = true
               }
+            })
+            if (showRider) {
+              this.setState({showRiderModal: true})
+            } else {
+              this.setState({showJoinModal: true})
             }
-          })
-        }
-      )
+          }
+        })
+      })
     })
   }
 
@@ -118,18 +103,18 @@ class Calendar extends React.Component {
       })
 
     axios.post('/saveEvent', newInfo)
-      .then((res) => {
-        if (res.data.success) {
-          axios.get('/events')
-            .then(newEvent => this.setState({b: newEvent.data}, () => {
-              newEvent.data.forEach(elem => {
-                elem.start = new Date(elem['start'])
-                elem.end = new Date(elem['end'])
-              })
-              this.setState({eventList: newEvent.data})
-            }))
-        }
-      })
+    .then((res) => {
+      if (res.data.success) {
+        axios.get('/events')
+        .then(newEvent => this.setState({b: newEvent.data}, () => {
+          newEvent.data.forEach(elem => {
+            elem.start = new Date(elem['start'])
+            elem.end = new Date(elem['end'])
+          })
+          this.setState({eventList: newEvent.data})
+        }))
+      }
+    })
     this.setState({ showTripModal: false })
   }
 
@@ -138,7 +123,6 @@ class Calendar extends React.Component {
   }
 
   saveJoin (information) {
-    console.log('info', information)
     axios.post('/joinEvent', information)
     .then(res => {
       if (res.data.success) {
@@ -156,54 +140,43 @@ class Calendar extends React.Component {
   }
 
   deleteTrip (information) {
-    console.log('trip deleted')
     this.setState({ showEditModal: false })
   }
 
   cancelEdit () {
-    console.log('edit canceled')
     this.setState({ showEditModal: false })
   }
 
   saveEdit (information) {
     this.setState({ showEditModal: false })
-    console.log('edit saved')
   }
-  removeRider(information){
-    axios.post('/removeUserFromEvent', information)
-      .then((res) => {
-        if (res.data.success) {
 
+  removeRider (information) {
+    axios.post('/removeUserFromEvent', information)
+    .then((res) => {
+      if (res.data.success) {
         axios.get('/eventInfo/' + this.state.currEvent._id).then(event => {
-          // let newInfo = [];
-          // console.log('riders name', event.data);
-          // console.log("currEvent is ", this.state.currEvent);
           this.setState({currEvent: event.data})
-            this.setState({ showEditModal: false })
-       })
+          this.setState({ showEditModal: false })
+        })
       }
-  })
-}
+    })
+  }
 
   leaveTrip (information) {
     axios.post('/removeUserFromEvent', information)
-      .then((res) => {
-        if (res.data.success) {
+    .then((res) => {
+      if (res.data.success) {
         axios.get('/eventInfo/' + this.state.currEvent._id).then(event => {
-          // let newInfo = [];
-          // console.log('riders name', event.data);
-          // console.log("currEvent is ", this.state.currEvent);
           this.setState({currEvent: event.data})
-        this.setState({ showRiderModal: false })
-       })
+          this.setState({ showRiderModal: false })
+        })
       }
-  })
-    console.log('rider has left trip')
+    })
   }
 
   closeRiderModal (information) {
     this.setState({ showRiderModal: false })
-    console.log('rider modal closed')
   }
 
   handleOriginFilterSelect (origin) {
