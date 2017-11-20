@@ -34,7 +34,7 @@ class EditModal extends React.Component {
   }
 
   deleteTrip () {
-    this.props.deleteTrip()
+    this.props.deleteTrip(this.state.currEvent._id)
   }
 
   cancelEdit () {

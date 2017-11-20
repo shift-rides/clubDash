@@ -140,6 +140,7 @@ class Calendar extends React.Component {
   }
 
   deleteTrip (information) {
+    console.log('info',information);
     this.setState({ showEditModal: false })
   }
 

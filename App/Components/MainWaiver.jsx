@@ -20,7 +20,9 @@ class MainWaiver extends React.Component {
       genderVal: '',
       phoneVal: '',
       yearVal: '',
-      gender: ''
+      gender: '',
+      addPhone: true
+
     }
     this.handleNameChange = this.handleNameChange.bind(this)
     this.handleGenderChange = this.handleGenderChange.bind(this)
@@ -61,12 +63,20 @@ class MainWaiver extends React.Component {
   submitForm () {
     const information = {
       name: this.state.nameVal,
-      year: this.state.yearVal,
+      year: '2020',
       email: this.props.profile.email,
       phone: this.state.phoneVal,
-      gender: null
+      gender: 'men'
     }
-    this.props.closeModal(information)
+
+    if(this.state.phoneVal.length === 12){
+      this.setState( {addPhone: true});
+        this.props.closeModal(information)
+    }
+    else{
+      this.setState( {addPhone: false});
+    }
+
   }
 
   render () {
@@ -86,7 +96,7 @@ class MainWaiver extends React.Component {
                 onChange={this.handleNameChange}
               />
             </FormGroup>
-            <FormGroup controlId='year'>
+            {/* <FormGroup controlId='year'>
               <ControlLabel>Class Year</ControlLabel>
               <FormControl
                 type='text'
@@ -94,7 +104,7 @@ class MainWaiver extends React.Component {
                 value={this.state.yearVal}
                 onChange={this.handleYearChange}
               />
-            </FormGroup>
+            </FormGroup> */}
             <FormGroup controlId='email'>
               <ControlLabel>Email</ControlLabel>
               <FormControl
@@ -112,6 +122,10 @@ class MainWaiver extends React.Component {
                 placeholder='Enter phone number'
                 onChange={this.handlePhoneChange}
               />
+              <div style={{fontSize:'16px', color:'red'}}>
+                  <ControlLabel>{this.state.addPhone ? ' ' : 'correct the phone number!'}</ControlLabel>
+              </div>
+
             </FormGroup>
             {/* <FormGroup>
               <ControlLabel>Gender</ControlLabel><br />
@@ -149,7 +163,7 @@ class MainWaiver extends React.Component {
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={this.submitForm}>Close</Button>
+          <Button onClick={this.submitForm}>Approve</Button>
           <HelpBlock>
             Note: Please fill your real phone number to make communication easier
           </HelpBlock>
