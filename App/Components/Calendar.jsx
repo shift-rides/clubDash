@@ -51,6 +51,8 @@ class Calendar extends React.Component {
     }))
   }
 
+  // TODO: Refactor
+
   handleOnSelectEvent (e) {
     var organizerName
     axios.get('/userInfo/' + e.organizer)
