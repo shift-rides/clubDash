@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const eventSchema = mongoose.Schema({
   allDay: Boolean,
@@ -6,17 +6,17 @@ const eventSchema = mongoose.Schema({
   end: String,
   origin: { type: String, enum: ['Brandeis', 'Logan Airport', 'New Jersey', 'New York'] },
   destination: { type: String, enum: ['Brandeis', 'Logan Airport', 'New Jersey', 'New York'] },
-  organizer: [mongoose.Schema.Types.ObjectId],
+  organizer: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   riders: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'User'
-        }
-      ],
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }
+  ],
   freeSeats: Number,
-  desc: String,
-});
+  desc: String
+})
 
-const Event = mongoose.model('Event', eventSchema);
+const Event = mongoose.model('Event', eventSchema)
 
-module.exports = Event;
+module.exports = Event

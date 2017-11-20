@@ -11,7 +11,7 @@ import axios from 'axios'
 import {AVAILABLE_NUMBERS, ORIGINS, DESTINATIONS} from '../../Library/const'
 
 BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
-//hi
+
 class Calendar extends React.Component {
   constructor (props) {
     super(props)
@@ -287,6 +287,24 @@ class Calendar extends React.Component {
           selectable
           onSelectEvent={(e) => this.handleOnSelectEvent(e)}
           onSelectSlot={(slotInfo) => this.handleOnSelectSlot(slotInfo)}
+          titleAccessor={(e) => {
+            const labelString = e.organizer.name + '\n' + e.origin + ' to\n' + e.destination
+            return labelString
+          }}
+          eventPropGetter={(e) => {
+            console.log('this profile', this.state.profile)
+            console.log('this event', e)
+            if (e.organizer._id === this.state.profile._id) {
+              return {className: 'organizerCell'}
+            }
+            e.riders.forEach(rider => {
+              if (rider._id === this.state.profile._id) {
+                return {className: 'riderCell'}
+              }
+            })
+            return {}
+          }}
+
         />
         <Modal show={this.state.showTripModal}>
           <TripModal

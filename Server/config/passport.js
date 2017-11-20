@@ -7,11 +7,10 @@ const passportHelper = (app) => {
   passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'https://shift-brandeis.herokuapp.com/auth/google/callback'
-    // callbackURL: 'http://localhost:3000/auth/google/callback'
+    // callbackURL: 'https://shift-brandeis.herokuapp.com/auth/google/callback'
+    callbackURL: 'http://localhost:3000/auth/google/callback'
   },
     ((accessToken, refreshToken, profile, done) => {
-      // console.log("email value",profile.emails[0].value);
       User.findOne({ googleId: profile.id }, (err, user) => {
         if (profile.emails[0].value.indexOf('brandeis.edu') === -1) {
           done(err, null)
