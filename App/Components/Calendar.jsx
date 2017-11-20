@@ -140,8 +140,19 @@ class Calendar extends React.Component {
   }
 
   deleteTrip (information) {
-    console.log('info',information);
-    this.setState({ showEditModal: false })
+    // console.log('info',information);
+
+    axios.post('/removeEvent', {id: information })
+    .then((res) => {
+      if (res.data.success) {
+          this.setState({ showEditModal: false })
+
+        let newEvents = this.state.eventList.filter(event =>  event._id !== information)
+
+          this.setState({eventList: newEvents})
+          this.setState({allEvents: newEvents})
+        }
+      })
   }
 
   cancelEdit () {

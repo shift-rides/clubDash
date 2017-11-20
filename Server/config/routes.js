@@ -38,6 +38,8 @@ const routeHelper = (app) => {
     res.json(req.user)
   })
 
+
+
   app.get('/userInfoPapulate', (req, res) => {
     User.findOne({_id: req.user._id})
     .populate('eventRegistered') // <==
@@ -89,6 +91,19 @@ const routeHelper = (app) => {
       { safe: true, upsert: true },
       () => res.json({ success: true }),
     )
+  })
+
+
+
+  app.post('/removeEvent/', (req, res) => {
+    Event.remove({ _id: req.body.id }, function(err) {
+        if (err) {
+              console.log("error for removeEvent");
+        }
+        else {
+            res.json({ success: true });
+        }
+    });
   })
 
   app.post('/removeUserFromEvent/', (req, res) => {
