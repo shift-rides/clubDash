@@ -21,6 +21,16 @@
   height: 22px;
 }
 
+/*Calendar*/
+.organizerCell {
+  background-color: red;
+  border: 0;
+}
+
+.riderCell {
+  background-color: green;
+}
+
 /*Modal*/
 
 

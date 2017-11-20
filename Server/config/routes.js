@@ -54,9 +54,12 @@ const routeHelper = (app) => {
   })
 
   app.get('/events', (req, res) => {
-    Event.find().lean().exec((err, users) => {
+    Event.find()
+    .populate('organizer')
+    .populate('riders')
+    .exec((err, events) => {
       if (err) {}
-      res.json(users)
+      res.json(events)
     })
   })
 
