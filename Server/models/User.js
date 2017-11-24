@@ -6,6 +6,7 @@ const userSchema = mongoose.Schema({
   name: String,
   imageUrl: String,
   email: String,
+  phone: String,
   waivers: [mongoose.Schema.Types.ObjectId],
   clubsLeading: [mongoose.Schema.Types.ObjectId],
   eventRegistered:[

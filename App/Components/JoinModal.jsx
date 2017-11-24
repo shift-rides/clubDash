@@ -50,9 +50,10 @@ class JoinModal extends React.Component {
             <div className='join-modal'>
               <Modal.Title>ORGANIZER
                 <div className='join-box'>
-                  {this.state.currEvent.organizerName}
+                  {this.state.currEvent.organizer.name}
                 </div>
               </Modal.Title>
+              <Modal.Title>Phone Number: {this.state.currEvent.organizer.phone}</Modal.Title>
               <Modal.Title>OTHER RIDERS</Modal.Title>
               <ListGroup>
                 {this.state.currEvent.riders.map((rider, index) => {

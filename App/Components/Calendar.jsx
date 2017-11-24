@@ -54,31 +54,23 @@ class Calendar extends React.Component {
   // TODO: Refactor
 
   handleOnSelectEvent (e) {
-    var organizerName
-    axios.get('/userInfo/' + e.organizer)
-    .then(profile => {
-      axios.get('/eventInfo/' + e._id).then(result => {
-        e.riders = result.data.riders
-        organizerName = profile.data.name
-        e.organizerName = organizerName
-        this.setState({currEvent: e}, () => {
-          var showRider = false
-          if (this.state.profile.name === organizerName) {
-            this.setState({showEditModal: true})
-          } else {
-            e.riders.forEach(rider => {
-              if (rider._id === this.state.profile._id) {
-                showRider = true
-              }
-            })
-            if (showRider) {
-              this.setState({showRiderModal: true})
-            } else {
-              this.setState({showJoinModal: true})
-            }
+    console.log("this is the info of the event", e)
+    this.setState({currEvent: e}, () => {
+      var showRider = false
+      if (this.state.profile.name === e.organizer.name) {
+        this.setState({showEditModal: true})
+      } else {
+        e.riders.forEach(rider => {
+          if (rider._id === this.state.profile._id) {
+            showRider = true
           }
         })
-      })
+        if (showRider) {
+          this.setState({showRiderModal: true})
+        } else {
+          this.setState({showJoinModal: true})
+        }
+      }
     })
   }
 

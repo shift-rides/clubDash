@@ -52,7 +52,8 @@ class EditModal extends React.Component {
           <Modal.Title>Edit Trip</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Modal.Title>Organizer: {this.state.currEvent.organizerName}</Modal.Title>
+          <Modal.Title>Organizer: {this.state.currEvent.organizer.name}</Modal.Title>
+          <Modal.Title>Phone Number: {this.state.currEvent.organizer.phone}</Modal.Title>
           <Modal.Title>Description: {this.state.currEvent.desc}</Modal.Title>
           <Modal.Title>Start Time: {this.state.currEvent.start.toLocaleString()}</Modal.Title>
           <Modal.Title>End Time: {this.state.currEvent.end.toLocaleString()}</Modal.Title>

@@ -173,6 +173,7 @@ const routeHelper = (app) => {
     } else {
       User.findById(req.user.id, (err, user) => {
         if (err) {}
+        user.phone = req.body.phone;
         if (req.body.name !== req.user.name) {
           user.name = req.body.name
         }

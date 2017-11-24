@@ -30,6 +30,7 @@ const passportHelper = (app) => {
             name: profile.displayName,
             imageUrl: profile.photos[0].value,
             email: profile.emails[0].value,
+            phone:'',
             waivers: [],
             admin: false,
             clubsLeading: []
