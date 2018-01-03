@@ -30,7 +30,11 @@ class Profile extends React.Component {
 
   leaveTrip (e) {
     console.log(e);
-    const info = {riderId: this.state.profileId, eventId: e._id }
+    const info = {
+      riderId: this.state.profileId,
+      eventId: e._id,
+      freeSeats: e.freeSeats
+ }
     console.log(info)
     console.log('trip left!');
     axios.post('/removeUserFromEvent', info)

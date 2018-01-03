@@ -112,7 +112,8 @@ const routeHelper = (app) => {
   app.post('/removeUserFromEvent/', (req, res) => {
     Event.update(
       {_id: req.body.eventId},
-      {$pull: {riders: req.body.riderId}})
+      {$pull: {riders: req.body.riderId},
+      $set:{"freeSeats": (req.body.freeSeats + 1)}})
       .then(err => {
         if (err) {}
         User.update({_id: req.body.riderId}, {$pull: {eventRegistered: req.body.eventId}})
@@ -148,12 +149,14 @@ const routeHelper = (app) => {
   app.post('/joinEvent', (req, res) => {
 
     Event.findByIdAndUpdate(req.body.eventID, {
-             $addToSet: {riders: req.body.userID}
+             $addToSet: {riders: req.body.userID},
+             $set:{"freeSeats": (req.body.freeSeats-1)}
          }, function(err) {
              if(err) {
                  console.log(err);
                  return console.log('error 1');
              } else {
+               console.log('free seats', req.body.freeSeats);
                User.findOneAndUpdate({_id: req.body.userID},
                  {$addToSet: {'eventRegistered': req.body.eventID}},
                  function(err) {

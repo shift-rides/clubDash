@@ -127,7 +127,7 @@ class Calendar extends React.Component {
             newEvent.data.forEach(elem => {
               elem.start = new Date(elem['start'])
               elem.end = new Date(elem['end'])
-              console.log('new event, ', newEvent.data)
+              console.log('new event for test, ', newEvent.data)
 
             })
             this.setState({eventList: newEvent.data})
@@ -179,13 +179,12 @@ class Calendar extends React.Component {
     axios.post('/removeUserFromEvent', information)
     .then((res) => {
       if (res.data.success) {
-        //TODO: redesign the  rider Modal
-        //TODO: redesign the profile page
         this.state.eventList.forEach((item)=>{
           if(item._id === information.eventId){
             const index = item.riders.indexOf(information.riderId);
             item.riders.splice(index, 1);
             console.log('each item', item)
+            item.freeSeats = item.freeSeats + 1;
           }
 
         })

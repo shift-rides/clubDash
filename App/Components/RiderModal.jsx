@@ -21,7 +21,11 @@ class RiderModal extends React.Component {
   }
 
   leaveTrip (e) {
-    const info = {riderId: e, eventId: this.state.currEvent._id}
+    const info = {
+      riderId: e,
+      eventId: this.state.currEvent._id,
+      freeSeats: this.state.currEvent.freeSeats
+}
     this.props.leaveTrip(info)
   }
 

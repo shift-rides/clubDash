@@ -24,7 +24,8 @@ class JoinModal extends React.Component {
   saveJoin () {
     this.props.saveJoin({
       eventID: this.state.currEvent._id,
-      userID: this.props.profile._id
+      userID: this.props.profile._id,
+      freeSeats: this.state.currEvent.freeSeats
     })
   }
 
