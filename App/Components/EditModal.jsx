@@ -48,50 +48,80 @@ class EditModal extends React.Component {
   render () {
     return (
       <div className='edit-modal'>
-        <Modal.Header>
-          <Modal.Title>Edit Trip</Modal.Title>
+
+        <Modal.Header >
+          <div className='trip-jumbotron'>
+            <Modal.Title>Edit Trip: organizer - {this.state.currEvent.organizer.name} / Phone: {this.state.currEvent.organizer.phone}</Modal.Title>
+          </div>
         </Modal.Header>
         <Modal.Body>
+          <div className=''>
+              <ul className='trip-times'>
+              <li><a>Start Time: {this.state.currEvent.start.toLocaleString()}</a></li>
+              <li ><a>End Time: {this.state.currEvent.end.toLocaleString()}</a></li>
+            </ul>
+          </div>
+          {/* <div className='wrapper'>
           <Modal.Title>Organizer: {this.state.currEvent.organizer.name}</Modal.Title>
           <Modal.Title>Phone Number: {this.state.currEvent.organizer.phone}</Modal.Title>
-          <Modal.Title>Description: {this.state.currEvent.desc}</Modal.Title>
-          <Modal.Title>Start Time: {this.state.currEvent.start.toLocaleString()}</Modal.Title>
-          <Modal.Title>End Time: {this.state.currEvent.end.toLocaleString()}</Modal.Title>
-          <Modal.Title>Leaving from: {this.state.currEvent.origin}</Modal.Title>
-          <Modal.Title>Destination: {this.state.currEvent.destination}</Modal.Title>
-          <form>
-            <FormGroup controlId='totalSeats'>
-              <ControlLabel>Total Seats Free: </ControlLabel>
-              <DropdownButton
-                title={this.state.numSeats}
-                id='totalSeats-dropdown'
-                onSelect={(numSeats) => this.handleNumSeatsChange(numSeats)}
-                noCaret
-              >
-                {this.state.availableNumbers.map((num, index) => {
-                  return (
-                    <MenuItem eventKey={num} key={index}>
-                      {num}
-                    </MenuItem>)
-                })}
-              </DropdownButton>
-            </FormGroup>
-            <Modal.Title>Other Riders:</Modal.Title>
-            <ListGroup>
-              {this.state.currEvent.riders.map((rider, index) => {
+        </div> */}
+
+      <div className='wrapper'>
+          <ul className='trip-times'>
+          <li><a>Origin: {this.state.currEvent.origin}</a></li>
+          <li><a>Destination: {this.state.currEvent.destination}</a></li>
+        </ul>
+      </div>
+
+      <div className='wrapper_2'>
+        <Modal.Title>Description: {this.state.currEvent.desc}</Modal.Title>
+      </div>
+
+      <div className='wrapper_2'>
+
+        <form>
+          <FormGroup controlId='totalSeats'>
+            <ControlLabel>Total Seats Free: </ControlLabel>
+            <DropdownButton
+              title={this.state.numSeats}
+              id='totalSeats-dropdown'
+              onSelect={(numSeats) => this.handleNumSeatsChange(numSeats)}
+              noCaret
+            >
+              {this.state.availableNumbers.map((num, index) => {
                 return (
-                  <ListGroupItem key={index}>
-                    <ControlLabel>{rider.name}</ControlLabel>
-                    <Button onClick={this.removeRider.bind(this, rider._id)}>Remove</Button>
-                  </ListGroupItem>)
+                  <MenuItem eventKey={num} key={index}>
+                    {num}
+                  </MenuItem>)
               })}
-            </ListGroup>
-          </form>
+            </DropdownButton>
+          </FormGroup>
+        </form>
+      </div>
+
+      <div className='wrapper_2'>
+      <Modal.Title>Other Riders:</Modal.Title>
+      <ListGroup>
+        {this.state.currEvent.riders.map((rider, index) => {
+          return (
+            <ListGroupItem key={index}>
+              <ControlLabel>{rider.name}</ControlLabel>
+              <Button onClick={this.removeRider.bind(this, rider._id)}>Remove</Button>
+            </ListGroupItem>)
+        })}
+      </ListGroup>
+    </div>
+
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={this.deleteTrip.bind(this)}>Delete</Button>
-          <Button onClick={this.cancelEdit.bind(this)}>Cancel</Button>
-          <Button onClick={this.saveEdit.bind(this)}>Done</Button>
+
+          <div className=''>
+              <ul className='edit-trip-footer-botton'>
+              <li ><a onClick={this.cancelEdit.bind(this)}>Cancel</a></li>
+              <li><a onClick={this.deleteTrip.bind(this)}>Delete</a></li>
+              <li ><a onClick={this.saveEdit.bind(this)}>Done</a></li>
+            </ul>
+          </div>
           <HelpBlock />
         </Modal.Footer>
       </div>

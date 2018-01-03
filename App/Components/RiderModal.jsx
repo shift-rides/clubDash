@@ -33,31 +33,70 @@ class RiderModal extends React.Component {
     return (
       <div className='join-modal'>
         <Modal.Header>
-          <Modal.Title>{this.state.currEvent.organizerName}'s Trip</Modal.Title>
+          <div className='trip-jumbotron'>
+            <Modal.Title>{this.state.currEvent.organizer.name}'s Trip {this.state.currEvent.freeSeats} FREE SEAT(S)</Modal.Title>
+          </div>
         </Modal.Header>
         <Modal.Body>
-          <Modal.Title>Organizer: {this.state.currEvent.organizerName}</Modal.Title>
-          <Modal.Title>Description: {this.state.currEvent.desc}</Modal.Title>
-          <Modal.Title>Leaving from: {this.state.currEvent.origin}</Modal.Title>
-          <Modal.Title>Destination: {this.state.currEvent.destination}</Modal.Title>
-          <Modal.Title>Free Seats: {this.state.currEvent.freeSeats}</Modal.Title>
-          <Modal.Title>Start Time: {this.state.currEvent.start.toLocaleString()}</Modal.Title>
-          <Modal.Title>End Time: {this.state.currEvent.end.toLocaleString()}</Modal.Title>
-          <Modal.Title>Other Riders:</Modal.Title>
+
+          <div className=''>
+              <ul className='trip-times'>
+              <li><a>Start Time: {this.state.currEvent.start.toLocaleString()}</a></li>
+              <li ><a>End Time: {this.state.currEvent.end.toLocaleString()}</a></li>
+            </ul>
+          </div>
+
+          <div className="">
+            <div className='wrapper'>
+                <ul className='trip-times'>
+                <li><a>Leaving from: {this.state.currEvent.origin}</a></li>
+                <li><a>Destination: {this.state.currEvent.destination}</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div className='wrapper' style={
+            { paddingTop: '15px',
+              textAlign: 'left',
+              paddingLeft: '15px'}}>
+          <Modal.Title>Organizer: {this.state.currEvent.organizer.name}</Modal.Title>
+          <Modal.Title>Phone Number: {this.state.currEvent.organizer.phone}</Modal.Title>
+        </div>
+        <div className='wrapper_2'>
+          <Modal.Title>Description: <span style={{color: 'black'}}> {this.state.currEvent.desc} </span>
+          </Modal.Title>
+        </div>
+
+        <div className='wrapper' style={
+          { paddingTop: '15px',
+            textAlign: 'left',
+            paddingLeft: '15px'}}>
+      <Modal.Title>OTHER RIDERS: </Modal.Title>
+  </div>
+
+        <div className='wrapper_2'>
+
           <ListGroup>
             {this.state.currEvent.riders.map((rider, index) => {
               if (rider.name === this.props.profile.name) {
-                return <ListGroupItem key={index}>{rider.name}
-                  <Button onClick={this.leaveTrip.bind(this, rider._id)}>Click to Leave Trip</Button>
+                return <ListGroupItem key={index}> rider {index+1} {rider.name} phone :{rider.phone}
+                  <li style={{float: 'right'}}><a onClick={this.leaveTrip.bind(this, rider._id)}>Leave Trip</a></li>
                 </ListGroupItem>
+                // padding:'2px 10px 2px 10px',  borderRadius:'4px', textShdow:' 0 1px 1px rgba(0, 0, 0, 0.2)', background:'red'
               } else {
                 return <ListGroupItem key={index}>{rider.name}</ListGroupItem>
               }
             })}
           </ListGroup>
+        </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={this.closeRiderModal.bind(this)}>Done</Button>
+
+          <div className=''>
+              <ul className='trip-footer-botton' >
+              <li style={{float: 'right'}}><a onClick={this.closeRiderModal.bind(this)}>Done</a></li>
+            </ul>
+          </div>
           <HelpBlock />
         </Modal.Footer>
       </div>

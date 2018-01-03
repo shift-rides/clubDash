@@ -146,26 +146,26 @@ const routeHelper = (app) => {
   })
 
   app.post('/joinEvent', (req, res) => {
-    Event.findOneAndUpdate({_id: req.body.eventID},
-      {$push: {'riders': req.body.userID}},
-      {safe: true, upsert: true, new: true},
-    ).then((err) => {
-      if (err) {
-        console.log('there is err 1', err)
-      } else {
-        User.findOneAndUpdate({_id: req.body.userID},
-          {$push: {'eventRegistered': req.body.eventID}},
-          {safe: true, upsert: true, new: true},
-        ).then((err) => {
-          if (err) {
-            console.log('there is an error', err)
-          } else {
-            res.json({success: true})
-          }
-        })
-      }
-    })
-  })
+
+    Event.findByIdAndUpdate(req.body.eventID, {
+             $addToSet: {riders: req.body.userID}
+         }, function(err) {
+             if(err) {
+                 console.log(err);
+                 return console.log('error 1');
+             } else {
+               User.findOneAndUpdate({_id: req.body.userID},
+                 {$addToSet: {'eventRegistered': req.body.eventID}},
+                 function(err) {
+                 if (err) {
+                   console.log('there is an error', err)
+                 } else {
+                   res.json({success: true})
+                 }
+               })
+             }
+         });
+       });
 
   app.post('/mainWaiver', (req, res) => {
     if (req.body.email !== req.user.email) {

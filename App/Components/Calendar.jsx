@@ -117,20 +117,26 @@ class Calendar extends React.Component {
   }
 
   saveJoin (information) {
+    console.log("info", information)
     axios.post('/joinEvent', information)
     .then(res => {
+          console.log("result is ", res);
       if (res.data.success) {
         axios.get('/events')
           .then(newEvent => this.setState({b: newEvent.data}, () => {
             newEvent.data.forEach(elem => {
               elem.start = new Date(elem['start'])
               elem.end = new Date(elem['end'])
+              console.log('new event, ', newEvent.data)
+
             })
             this.setState({eventList: newEvent.data})
           }))
       }
+      console.log("nothing happend2")
+      this.setState({ showJoinModal: false })
     })
-    this.setState({ showJoinModal: false })
+
   }
 
   deleteTrip (information) {
@@ -173,10 +179,17 @@ class Calendar extends React.Component {
     axios.post('/removeUserFromEvent', information)
     .then((res) => {
       if (res.data.success) {
-        axios.get('/eventInfo/' + this.state.currEvent._id).then(event => {
-          this.setState({currEvent: event.data})
-          this.setState({ showRiderModal: false })
+        //TODO: redesign the  rider Modal
+        //TODO: redesign the profile page
+        this.state.eventList.forEach((item)=>{
+          if(item._id === information.eventId){
+            const index = item.riders.indexOf(information.riderId);
+            item.riders.splice(index, 1);
+            console.log('each item', item)
+          }
+
         })
+        this.setState({ showRiderModal: false })
       }
     })
   }

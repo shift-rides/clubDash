@@ -72,18 +72,17 @@ class TripModal extends React.Component {
           </div>
         </Modal.Header>
         <Modal.Body>
-          <div className='row'>
-            <div className='trip-times'>
-              <Modal.Title>START: {this.props.timeslotStart}</Modal.Title>
-              <Modal.Title>END: {this.props.timeslotEnd}</Modal.Title>
-            </div>
+          <div className=''>
+              <ul className='trip-times'>
+              <li><a>START: {this.props.timeslotStart}</a></li>
+              <li ><a>END: {this.props.timeslotEnd}</a></li>
+            </ul>
           </div>
-          <div className='row'>
+          <div className=''>
             <form>
-              <div className='trip-button'>
+              <div className='trip-button-seats'>
                 <FormGroup controlId='totalSeats'>
-                  <ControlLabel>TOTAL FREE SEATS</ControlLabel>
-                  <div className='row'>
+                  <ControlLabel>FREE SEATS</ControlLabel>
                     <DropdownButton
                       title={this.state.numSeats}
                       id='dropdown'
@@ -97,69 +96,78 @@ class TripModal extends React.Component {
                           </MenuItem>)
                       })}
                     </DropdownButton>
-                  </div>
+
                 </FormGroup>
               </div>
-              <div className='trip-button'>
-                <FormGroup controlId='origin'>
-                  <ControlLabel>LEAVING FROM</ControlLabel>
-                  <div className='row'>
-                    <DropdownButton
-                      title={this.state.origin}
-                      id='dropdown'
-                      onSelect={(origin) => this.handleOriginChange(origin)}
-                      noCaret
-                    >
-                      {this.state.origins.map((location, index) => {
-                        return (
-                          <MenuItem key={index} eventKey={location}>
-                            {location}
-                          </MenuItem>)
-                      })}
-                    </DropdownButton>
+              <div className='trip-button-leaving'>
+                <div>
+                  <FormGroup controlId='origin'>
+                    <div className=''>
+                      <ControlLabel>  ORIGION  </ControlLabel>
+                      <DropdownButton
+                        title={this.state.origin}
+                        id='dropdown'
+                        onSelect={(origin) => this.handleOriginChange(origin)}
+                        noCaret
+                      >
+                        {this.state.origins.map((location, index) => {
+                          return (
+                            <MenuItem key={index} eventKey={location}>
+                              {location}
+                            </MenuItem>)
+                        })}
+                      </DropdownButton>
+                    </div>
+                  </FormGroup>
+
+                  <div className=''>
+                    <FormGroup controlId='destination'>
+                      <div className=''>
+                        <ControlLabel>DESTINATION</ControlLabel>
+                        <DropdownButton
+                          title={this.state.destination}
+                          id='dropdown'
+                          onSelect={(destination) => this.handleDestinationChange(destination)}
+                          noCaret
+                        >
+                          {this.state.destinations.map((location, index) => {
+                            return (
+                              <MenuItem key={index} eventKey={location}>
+                                {location}
+                              </MenuItem>)
+                          })}
+                        </DropdownButton>
+                      </div>
+                    </FormGroup>
                   </div>
-                </FormGroup>
+                </div>
+
               </div>
-              <div className='trip-button'>
-                <FormGroup controlId='destination'>
-                  <ControlLabel>DESTINATION</ControlLabel>
-                  <div className='row'>
-                    <DropdownButton
-                      title={this.state.destination}
-                      id='dropdown'
-                      onSelect={(destination) => this.handleDestinationChange(destination)}
-                      noCaret
-                    >
-                      {this.state.destinations.map((location, index) => {
-                        return (
-                          <MenuItem key={index} eventKey={location}>
-                            {location}
-                          </MenuItem>)
-                      })}
-                    </DropdownButton>
-                  </div>
+              <div className='modal_description'>
+                <FormGroup controlId='description' bsClass='modal_description'>
+                  <ControlLabel>DESCRIPTION</ControlLabel>
+                  <FormControl
+                    type='string'
+                    placeholder='Enter a description for the trip.'
+                    value={this.state.description}
+                    onChange={this.handleDescriptionChange.bind(this)}
+                  />
                 </FormGroup>
               </div>
             </form>
           </div>
-          <form>
-            <div className='trip-button'>
-              <FormGroup controlId='description'>
-                <ControlLabel>DESCRIPTION</ControlLabel>
-                <FormControl
-                  type='string'
-                  placeholder='Enter a description for the trip.'
-                  value={this.state.description}
-                  onChange={this.handleDescriptionChange.bind(this)}
-                />
-              </FormGroup>
-            </div>
-          </form>
+
+
+
         </Modal.Body>
         <div className='trip-footer'>
           <Modal.Footer>
-            <Button onClick={this.cancelTrip.bind(this)}>Cancel</Button>
-            <Button onClick={this.saveTrip.bind(this)}>Save</Button>
+            <div className=''>
+                <ul className='trip-footer-botton'>
+                <li><a onClick={this.cancelTrip.bind(this)}>Cancel</a></li>
+                <li><a onClick={this.saveTrip.bind(this)}>Save</a></li>
+              </ul>
+            </div>
             <HelpBlock />
           </Modal.Footer>
         </div>

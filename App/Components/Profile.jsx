@@ -13,15 +13,18 @@ class Profile extends React.Component {
     super(props)
     this.state = {
       profile: DUMMY_EVENTS,
-      profileId:null
+      profileId:null,
+      userProfile:{imageUrl: 'www', name:'test'}
     }
   }
   componentWillMount () {
     axios.get('/userInfoPapulate')
       .then(profile => {
-        console.log('profile', profile)
         this.setState({ profile: profile.data.eventRegistered })
         this.setState({ profileId: profile.data._id})
+        this.setState({ userProfile: profile.data})
+        console.log('profile', this.state.userProfile)
+
       })
   }
 
@@ -45,16 +48,21 @@ class Profile extends React.Component {
 
   render () {
     return (
-      <div className='contents'>
-        <Image src={this.state.profile.imageUrl} circle />
-        <p>{this.state.profile.name}</p>
+      <div className='profile-content'>
+      <div className = "column" style= {{float:'left', width:'50%'}}>
+        <Image src={this.state.userProfile.imageUrl} circle />
+        <p>{this.state.userProfile.name}</p>
+        <Button onClick={this.deleteAccount}>Delete Account</Button>
+    </div>
+      <div className = "column" style= {{float:'left', width:'50%'}}>
         <ListGroup>
           {this.state.profile.map((event, index) => {
-            console.log()
             return <ListGroupItem key={index}>{event.desc}'s Trip: <Button onClick={this.leaveTrip.bind(this,event)}>Click to Leave Trip</Button></ListGroupItem>
           })}
         </ListGroup>
-        <Button onClick={this.deleteAccount}>Delete Account</Button>
+      </div>
+
+
       </div>
     )
   }

@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-      "build": "webpack --config webpack.prod.config.js",
+        "build": "webpack --config webpack.prod.config.js",
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "npm run build && NODE_ENV=production node ./Server/server.js",
         "webpack": "webpack",
@@ -34,7 +34,7 @@
         "express": "^4.15.3",
         "express-session": "^1.15.5",
         "moment": "^2.19.1",
-        "mongoose": "^4.11.5",
+        "mongoose": "4.0.5",
         "passport": "^0.3.2",
         "passport-google-oauth": "^1.0.0",
         "prop-types": "^15.5.10",
