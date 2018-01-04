@@ -5,7 +5,8 @@ import {
   Image,
   ListGroup,
   ListGroupItem,
-  Button
+  Button,
+  Label
 } from 'react-bootstrap'
 
 class Profile extends React.Component {
@@ -54,14 +55,17 @@ class Profile extends React.Component {
     return (
       <div className='profile-content'>
       <div className = "column" style= {{float:'left', width:'50%'}}>
-        <Image src={this.state.userProfile.imageUrl} circle />
-        <p>{this.state.userProfile.name}</p>
-        <Button onClick={this.deleteAccount}>Delete Account</Button>
+        <Image src={this.state.userProfile.imageUrl} circle style={{marginLeft: '25%',
+    marginBottom: '15px'}}/>
+  <p style = {{marginLeft: '20px'}}>{this.state.userProfile.name}</p>
+      <Button bsStyle="warning" onClick={this.deleteAccount}>Delete Account</Button>
     </div>
       <div className = "column" style= {{float:'left', width:'50%'}}>
-        <ListGroup>
+        <h2></h2>
+      <Label bsStyle="success" style = {{fontSize: '16px'}}>Your trips</Label>
+    <ListGroup style = {{marginTop: "10px"}}>
           {this.state.profile.map((event, index) => {
-            return <ListGroupItem key={index}>{event.desc}'s Trip: <Button onClick={this.leaveTrip.bind(this,event)}>Click to Leave Trip</Button></ListGroupItem>
+            return <ListGroupItem key={index} style = {{fontSize: '14px'}}>{event.organizer.name}'s Trip: <Button onClick={this.leaveTrip.bind(this,event)}>Leave Trip</Button></ListGroupItem>
           })}
         </ListGroup>
       </div>

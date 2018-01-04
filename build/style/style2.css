@@ -269,12 +269,24 @@
 .profile-content{
   width:50%;
   margin: 0px auto;
+  border-radius: 6px;
+  background: white;
+  padding: 10px 20px 10px 20px;
+  box-shadow: 0 19px 48px rgba(0,0,0,0.30), 0 15px 32px rgba(0,0,0,0.22);
 }
 
 .profile-content:after {
     content: "";
     display: table;
     clear: both;
+}
+
+.profile-content button.btn.btn-default{
+  border-radius: 4px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  background: red;
+  margin-left: 20px;
+  color: white;
 }
 html, body {
   background: #e5e5e5;

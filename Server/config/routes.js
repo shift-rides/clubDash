@@ -42,7 +42,17 @@ const routeHelper = (app) => {
 
   app.get('/userInfoPapulate', (req, res) => {
     User.findOne({_id: req.user._id})
-    .populate('eventRegistered') // <==
+    .populate( {
+    path: 'eventRegistered',
+    populate: {
+      path: 'organizer',
+      model: 'User'
+    }
+          }) // <==
+          // {
+          //       path: 'eventRegistered',
+          //       model: 'Event'
+          //     },
     .exec((err, events) => {
       if (err) {}
       res.json((events))

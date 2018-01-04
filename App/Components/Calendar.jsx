@@ -2,7 +2,7 @@ import React from 'react'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 import myEventsList from '../../Library/events'
-import {Modal, MenuItem, ButtonToolbar, DropdownButton} from 'react-bootstrap'
+import {Modal, MenuItem, ButtonToolbar, DropdownButton, Label} from 'react-bootstrap'
 import TripModal from './TripModal'
 import JoinModal from './JoinModal'
 import EditModal from './EditModal'
@@ -264,7 +264,9 @@ class Calendar extends React.Component {
 
   renderFilterButtons () {
     return (
+
       <ButtonToolbar style={{display: 'flex', justifyContent: 'center'}}>
+
         <DropdownButton title={this.state.originFilterButton} key='1' id='from-filter' onSelect={(e) => this.handleOriginFilterSelect(e)}>
           <MenuItem eventKey='All' key='0'>All</MenuItem>
           {this.state.origins.map((origin, index) => {
@@ -292,6 +294,12 @@ class Calendar extends React.Component {
     return (
       <div>
         <div>
+
+          <div style = {{marginLeft: "10px", fontSize: '14px'}}>
+          <Label bsStyle="primary">Free space</Label>{' '}
+          <Label bsStyle="warning">No space</Label>{' '}
+            <Label bsStyle="danger">You're the organizer</Label>
+        </div>
           {this.renderFilterButtons()}
         </div>
         <BigCalendar

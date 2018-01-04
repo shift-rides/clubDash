@@ -1,3 +1,2 @@
-1. //TODO: inc and dec of seats based on join/ leave.
-2. //TODO: Organize Profile page
+2. //TODO: Organize Profile page - Populate name of organizer and organize css cards
 3. //TODO: Organize all the underline - text-decoration:none;
