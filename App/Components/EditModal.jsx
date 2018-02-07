@@ -107,7 +107,8 @@ class EditModal extends React.Component {
             <ListGroupItem key={index}>
               {/* <ControlLabel> rider {index+1} {rider.name} phone :{rider.phone}</ControlLabel> */}
                     rider {index+1} {rider.name} phone :{rider.phone}
-              <Button onClick={this.removeRider.bind(this, rider._id)}>Remove</Button>
+                      <li style={{float: 'right'}}><a onClick={this.removeRider.bind(this, rider._id)}> Remove </a></li>
+              {/* <Button onClick={this.removeRider.bind(this, rider._id)}>Remove</Button> */}
             </ListGroupItem>)
         })}
       </ListGroup>
