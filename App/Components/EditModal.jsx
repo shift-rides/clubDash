@@ -105,7 +105,8 @@ class EditModal extends React.Component {
         {this.state.currEvent.riders.map((rider, index) => {
           return (
             <ListGroupItem key={index}>
-              <ControlLabel>{rider.name}</ControlLabel>
+              {/* <ControlLabel> rider {index+1} {rider.name} phone :{rider.phone}</ControlLabel> */}
+                    rider {index+1} {rider.name} phone :{rider.phone}
               <Button onClick={this.removeRider.bind(this, rider._id)}>Remove</Button>
             </ListGroupItem>)
         })}
