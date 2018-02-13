@@ -306,7 +306,7 @@ class Calendar extends React.Component {
           {...this.props}
           events={this.state.eventList}
           views={['week', 'day']}
-          step={60}
+          step={30}
           defaultDate={new Date(Date.now())}
           min={new Date(today.getFullYear(), today.getMonth(), today.getDate(), 6)}
           defaultView='week'
