@@ -8,10 +8,7 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "npm run build && NODE_ENV=production node ./Server/server.js",
         "webpack": "webpack",
-        "server": "node ./Server/server.js",
-        "dev": "concurrently -k \"npm run devWebpack\" \"npm run devServer\"",
-        "devWebpack": "webpack --watch",
-        "devServer": "node ./Server/server.js"
+        "server": "node ./Server/server.js"
     },
     "repository": {
         "type": "git",
