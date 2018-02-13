@@ -24,31 +24,31 @@ class Profile extends React.Component {
         this.setState({ profile: profile.data.eventRegistered })
         this.setState({ profileId: profile.data._id})
         this.setState({ userProfile: profile.data})
-        console.log('profile', this.state.userProfile)
+        //console.log('profile', this.state.userProfile)
 
       })
   }
 
   leaveTrip (e) {
-    console.log(e);
+  //  console.log(e);
     const info = {
       riderId: this.state.profileId,
       eventId: e._id,
       freeSeats: e.freeSeats
  }
-    console.log(info)
-    console.log('trip left!');
+    //console.log(info)
+    //console.log('trip left!');
     axios.post('/removeUserFromEvent', info)
       .then((res) => {
         if (res.data.success) {
-          console.log("I'm done with deleting")
+        //  console.log("I'm done with deleting")
           this.forceUpdate();
         }
       })
   }
 
   deleteAccount () {
-    console.log('Account deleted!')
+  //  console.log('Account deleted!')
   }
 
   render () {
