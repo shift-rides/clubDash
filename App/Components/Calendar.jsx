@@ -54,7 +54,7 @@ class Calendar extends React.Component {
   // TODO: Refactor
 
   handleOnSelectEvent (e) {
-    console.log("this is the info of the event", e)
+    //console.log("this is the info of the event", e)
     this.setState({currEvent: e}, () => {
       var showRider = false
       if (this.state.profile.name === e.organizer.name) {
@@ -117,23 +117,23 @@ class Calendar extends React.Component {
   }
 
   saveJoin (information) {
-    console.log("info", information)
+    //console.log("info", information)
     axios.post('/joinEvent', information)
     .then(res => {
-          console.log("result is ", res);
+          //console.log("result is ", res);
       if (res.data.success) {
         axios.get('/events')
           .then(newEvent => this.setState({b: newEvent.data}, () => {
             newEvent.data.forEach(elem => {
               elem.start = new Date(elem['start'])
               elem.end = new Date(elem['end'])
-              console.log('new event for test, ', newEvent.data)
+            //  console.log('new event for test, ', newEvent.data)
 
             })
             this.setState({eventList: newEvent.data})
           }))
       }
-      console.log("nothing happend2")
+    //  console.log("nothing happend2")
       this.setState({ showJoinModal: false })
     })
 
@@ -183,7 +183,7 @@ class Calendar extends React.Component {
           if(item._id === information.eventId){
             const index = item.riders.indexOf(information.riderId);
             item.riders.splice(index, 1);
-            console.log('each item', item)
+            //console.log('each item', item)
             item.freeSeats = item.freeSeats + 1;
           }
 
@@ -318,8 +318,8 @@ class Calendar extends React.Component {
             return labelString
           }}
           eventPropGetter={(e) => {
-            console.log('this profile', this.state.profile)
-            console.log('this event', e)
+            // console.log('this profile', this.state.profile)
+            // console.log('this event', e)
             if (e.organizer._id === this.state.profile._id) {
               return {className: 'organizerCell'}
             }
