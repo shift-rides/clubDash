@@ -2,7 +2,7 @@ export default [
   {
     'title': 'A crazy fun time.',
     'allDay': true,
-    'start': "3/31/2015, 7:00:00 AM",
+    'start': "3/31/2015, 4:00:00 AM",
     'end': "3/31/2015, 9:00:00 AM",
     origin: 'Brandeis',
     destination: 'New York',
